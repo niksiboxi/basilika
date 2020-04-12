@@ -15,6 +15,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include "sdk_macros.h"
 
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
@@ -22,8 +23,12 @@
 
 #define SAMPLES_IN_BUFFER 1
 
+//#define ADC_RESULT_IN_MILLI_VOLTS(ADC_VALUE)((((ADC_VALUE)*600)/256)*6)
+
 static const nrf_drv_timer_t m_timer = NRF_DRV_TIMER_INSTANCE(0);
 static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
+nrf_saadc_value_t adc_result;
+static uint8_t voltage_lvl_in_mill_volts;
 
 static const nrfx_saadc_config_t saadc_config =
     {
@@ -39,6 +44,12 @@ void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
     err_code = nrf_drv_saadc_buffer_convert(p_event->data.done.p_buffer, SAMPLES_IN_BUFFER);
     APP_ERROR_CHECK(err_code);
 
+    adc_result = p_event->data.done.p_buffer[0];
+
+    voltage_lvl_in_mill_volts = adc_result * 600 / 256 * 6;
+
+    NRF_LOG_INFO("ADC Reading in millivolts: %d", voltage_lvl_in_mill_volts);
+
     NRF_LOG_INFO("%d", p_event->data.done.p_buffer[0]);
   }
 }
@@ -49,7 +60,6 @@ void saadc_init(void) {
       NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1); // pin P0.03
 
   err_code = nrf_drv_saadc_init(&saadc_config, saadc_callback);
-  //err_code = nrf_drv_saadc_init(NULL, saadc_callback);  // Initialize SAADC
   APP_ERROR_CHECK(err_code);
 
   err_code = nrf_drv_saadc_channel_init(0, &channel_config);
