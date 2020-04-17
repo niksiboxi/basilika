@@ -25,9 +25,9 @@
 
 #define SAMPLES_IN_BUFFER 1
 
-#define LED_RED 5
-#define LED_GRN 6
-#define LED_BLU 7
+#define LED_RED 4
+#define LED_GRN 28
+#define LED_BLU 29
 
 //#define ADC_RESULT_IN_MILLI_VOLTS(ADC_VALUE)((((ADC_VALUE)*600)/256)*6)
 
@@ -91,25 +91,24 @@ int main(void) {
   while (1) {
     //nrf_drv_saadc_sample();
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 3; i++) {
       nrf_delay_ms(1000);
-      if (i == 0)
+      NRF_LOG_INFO("%d", i);
+      if (i == 0) {
         nrf_gpio_pin_set(LED_RED);
-      if (i == 1){
-        nrf_gpio_pin_set(LED_RED);
-        nrf_gpio_pin_set(LED_GRN);
-        }
-      if (i == 2){
-        nrf_gpio_pin_set(LED_RED);
-        nrf_gpio_pin_set(LED_GRN);
-        nrf_gpio_pin_set(LED_BLU);
-        }
-      if (i == 3){
-        nrf_gpio_pin_clear(LED_RED);
         nrf_gpio_pin_clear(LED_GRN);
         nrf_gpio_pin_clear(LED_BLU);
       }
-      NRF_LOG_INFO("%d", i);
+      if (i == 1) {
+        nrf_gpio_pin_set(LED_GRN);
+        nrf_gpio_pin_clear(LED_RED);
+        nrf_gpio_pin_clear(LED_BLU);
+      }
+      if (i == 2) {
+        nrf_gpio_pin_clear(LED_GRN);
+        nrf_gpio_pin_clear(LED_GRN);
+        nrf_gpio_pin_set(LED_BLU);
+      }
     }
   }
 }
