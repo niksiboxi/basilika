@@ -36,6 +36,19 @@ static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
 nrf_saadc_value_t adc_result;
 static uint8_t voltage_lvl_in_mill_volts;
 
+void rgb_led_ctrl(int sample) {
+  if (sample < 30) {
+    nrf_gpio_pin_set(LED_RED);
+    nrf_gpio_pin_clear(LED_GRN);
+  } else if (sample >= 30 && sample < 70) {
+    nrf_gpio_pin_set(LED_RED);
+    nrf_gpio_pin_set(LED_GRN);
+  } else {
+    nrf_gpio_pin_set(LED_GRN);
+    nrf_gpio_pin_clear(LED_RED);
+  }
+}
+
 static const nrfx_saadc_config_t saadc_config =
     {
         NRF_SAADC_RESOLUTION_8BIT,
@@ -57,6 +70,8 @@ void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
     NRF_LOG_INFO("ADC Reading in millivolts: %d", voltage_lvl_in_mill_volts);
 
     NRF_LOG_INFO("%d", p_event->data.done.p_buffer[0]);
+
+    rgb_led_ctrl(p_event->data.done.p_buffer[0]);
   }
 }
 
@@ -87,28 +102,10 @@ int main(void) {
   nrf_gpio_cfg_output(LED_RED);
   nrf_gpio_cfg_output(LED_GRN);
   nrf_gpio_cfg_output(LED_BLU);
+  int x;
 
   while (1) {
-    //nrf_drv_saadc_sample();
-
-    for (int i = 0; i < 3; i++) {
-      nrf_delay_ms(1000);
-      NRF_LOG_INFO("%d", i);
-      if (i == 0) {
-        nrf_gpio_pin_set(LED_RED);
-        nrf_gpio_pin_clear(LED_GRN);
-        nrf_gpio_pin_clear(LED_BLU);
-      }
-      if (i == 1) {
-        nrf_gpio_pin_set(LED_GRN);
-        nrf_gpio_pin_clear(LED_RED);
-        nrf_gpio_pin_clear(LED_BLU);
-      }
-      if (i == 2) {
-        nrf_gpio_pin_clear(LED_GRN);
-        nrf_gpio_pin_clear(LED_GRN);
-        nrf_gpio_pin_set(LED_BLU);
-      }
-    }
+    nrf_drv_saadc_sample();
+    nrf_delay_ms(1000);
   }
 }
