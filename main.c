@@ -36,16 +36,17 @@ static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
 nrf_saadc_value_t adc_result;
 static int16_t voltage_lvl_in_mill_volts;
 
+// For money tree
 void rgb_led_ctrl(int sample) {  
-  if (sample > 51) {    // Oversaturation > 20%
+  if (sample > 102) {    // Oversaturation > 40%
     nrf_gpio_pin_clear(LED_RED);
     nrf_gpio_pin_clear(LED_GRN);
     nrf_gpio_pin_set(LED_BLU);
-  } else if (sample >= 21  && sample <= 51) {   // Available Water 8%...20%
+  } else if (sample >= 54  && sample <= 102) {   // Available Water 21%...40%
     nrf_gpio_pin_clear(LED_RED);
     nrf_gpio_pin_set(LED_GRN);
     nrf_gpio_pin_clear(LED_BLU);
-  } else {    // Unavailable Water < 8%
+  } else {    // Unavailable Water < 21%
     nrf_gpio_pin_set(LED_RED);
     nrf_gpio_pin_clear(LED_GRN);
     nrf_gpio_pin_clear(LED_BLU);
