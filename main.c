@@ -34,18 +34,21 @@
 static const nrf_drv_timer_t m_timer = NRF_DRV_TIMER_INSTANCE(0);
 static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
 nrf_saadc_value_t adc_result;
-static uint8_t voltage_lvl_in_mill_volts;
+static int16_t voltage_lvl_in_mill_volts;
 
-void rgb_led_ctrl(int sample) {
-  if (sample < 30) {
+void rgb_led_ctrl(int sample) {  
+  if (sample > 51) {    // Oversaturation > 20%
+    nrf_gpio_pin_clear(LED_RED);
+    nrf_gpio_pin_clear(LED_GRN);
+    nrf_gpio_pin_set(LED_BLU);
+  } else if (sample >= 21  && sample <= 51) {   // Available Water 8%...20%
+    nrf_gpio_pin_clear(LED_RED);
+    nrf_gpio_pin_set(LED_GRN);
+    nrf_gpio_pin_clear(LED_BLU);
+  } else {    // Unavailable Water < 8%
     nrf_gpio_pin_set(LED_RED);
     nrf_gpio_pin_clear(LED_GRN);
-  } else if (sample >= 30 && sample < 70) {
-    nrf_gpio_pin_set(LED_RED);
-    nrf_gpio_pin_set(LED_GRN);
-  } else {
-    nrf_gpio_pin_set(LED_GRN);
-    nrf_gpio_pin_clear(LED_RED);
+    nrf_gpio_pin_clear(LED_BLU);
   }
 }
 
@@ -65,11 +68,11 @@ void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
 
     adc_result = p_event->data.done.p_buffer[0];
 
-    voltage_lvl_in_mill_volts = adc_result * 600 / 256 * 6;
+    // Vin = ADCresult * Reference / (Resolution * Gain)
+    // VDD = 2.84V
+    voltage_lvl_in_mill_volts = (adc_result * 2840) / 255 * 1;
 
-    NRF_LOG_INFO("ADC Reading in millivolts: %d", voltage_lvl_in_mill_volts);
-
-    NRF_LOG_INFO("%d", p_event->data.done.p_buffer[0]);
+    NRF_LOG_INFO("ADC: %d mV: %u", adc_result, voltage_lvl_in_mill_volts);
 
     rgb_led_ctrl(p_event->data.done.p_buffer[0]);
   }
@@ -79,6 +82,9 @@ void saadc_init(void) {
   ret_code_t err_code;
   nrf_saadc_channel_config_t channel_config =
       NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1); // pin P0.03
+
+  channel_config.reference = NRF_SAADC_REFERENCE_VDD4;  // VDD/4 as reference.
+  channel_config.gain = SAADC_CH_CONFIG_GAIN_Gain1;     // 1x Gain
 
   err_code = nrf_drv_saadc_init(&saadc_config, saadc_callback);
   APP_ERROR_CHECK(err_code);
