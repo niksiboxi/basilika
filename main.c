@@ -5,11 +5,15 @@
 #include "app_error.h"
 #include "app_util_platform.h"
 #include "boards.h"
+#include "nordic_common.h"
 #include "nrf.h"
+#include "nrf_sdh.h"
+#include "nrf_soc.h"
 #include "nrf_delay.h"
 #include "nrf_drv_ppi.h"
 #include "nrf_drv_saadc.h"
 #include "nrf_drv_timer.h"
+#include "nrf_drv_rtc.h"
 #include "nrf_pwr_mgmt.h"
 #include "sdk_macros.h"
 #include <stdbool.h>
@@ -25,16 +29,21 @@
 
 #define SAMPLES_IN_BUFFER 1
 
+#define UART_PRINTING_ENABLED
+
 #define LED_RED 4
 #define LED_GRN 28
 #define LED_BLU 29
 
 //#define ADC_RESULT_IN_MILLI_VOLTS(ADC_VALUE)((((ADC_VALUE)*600)/256)*6)
 
-static const nrf_drv_timer_t m_timer = NRF_DRV_TIMER_INSTANCE(0);
+//static const nrf_drv_timer_t m_timer = NRF_DRV_TIMER_INSTANCE(0);
 static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
 nrf_saadc_value_t adc_result;
 static int16_t voltage_lvl_in_mill_volts;
+const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(0); /**< Declaring an instance of nrf_drv_rtc for RTC0. */
+
+// CHECK nRF5_SDK_16.0.0_98a08e2/examples//peripheral/rtc/main.c
 
 // For money tree
 void rgb_led_ctrl(int sample) {  
@@ -73,7 +82,9 @@ void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
     // VDD = 2.84V
     voltage_lvl_in_mill_volts = (adc_result * 2840) / 255 * 1;
 
+    #ifdef UART_PRINTING_ENABLED
     NRF_LOG_INFO("ADC: %d mV: %u", adc_result, voltage_lvl_in_mill_volts);
+    #endif
 
     rgb_led_ctrl(p_event->data.done.p_buffer[0]);
   }
@@ -104,7 +115,9 @@ int main(void) {
   NRF_LOG_DEFAULT_BACKENDS_INIT();
 
   saadc_init();
+  #ifdef UART_PRINTING_ENABLED
   NRF_LOG_INFO("SAADC HAL simple example started.");
+  #endif
 
   nrf_gpio_cfg_output(LED_RED);
   nrf_gpio_cfg_output(LED_GRN);
@@ -113,6 +126,7 @@ int main(void) {
 
   while (1) {
     nrf_drv_saadc_sample();
-    nrf_delay_ms(1000);
+    err_code = sd_app_evt_wait();
+    //nrf_delay_ms(1000);
   }
 }
