@@ -68,9 +68,11 @@
     </folder>
     <folder Name="nRF_Drivers">
       <file file_name="nRF5_SDK_16.0.0_98a08e2/integration/nrfx/legacy/nrf_drv_ppi.c" />
+      <file file_name="nRF5_SDK_16.0.0_98a08e2/integration/nrfx/legacy/nrf_drv_clock.c" />
       <file file_name="nRF5_SDK_16.0.0_98a08e2/integration/nrfx/legacy/nrf_drv_uart.c" />
       <file file_name="nRF5_SDK_16.0.0_98a08e2/modules/nrfx/soc/nrfx_atomic.c" />
       <file file_name="nRF5_SDK_16.0.0_98a08e2/modules/nrfx/drivers/src/nrfx_ppi.c" />
+      <file file_name="nRF5_SDK_16.0.0_98a08e2/modules/nrfx/drivers/src/nrfx_clock.c" />
       <file file_name="nRF5_SDK_16.0.0_98a08e2/modules/nrfx/drivers/src/prs/nrfx_prs.c" />
       <file file_name="nRF5_SDK_16.0.0_98a08e2/modules/nrfx/drivers/src/nrfx_saadc.c" />
       <file file_name="nRF5_SDK_16.0.0_98a08e2/modules/nrfx/drivers/src/nrfx_timer.c" />
