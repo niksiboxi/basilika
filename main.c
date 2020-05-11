@@ -36,7 +36,7 @@
 #define LED_GRN 28
 #define LED_BLU 29
 
-#define COMPARE_COUNTERTIME (60UL) /**< Get Compare event COMPARE_TIME seconds after the counter starts from 0. */
+#define COMPARE_COUNTERTIME (10UL) /**< Get Compare event COMPARE_TIME seconds after the counter starts from 0. */
 
 //#define ADC_RESULT_IN_MILLI_VOLTS(ADC_VALUE)((((ADC_VALUE)*600)/256)*6)
 
@@ -46,15 +46,11 @@ nrf_saadc_value_t adc_result;
 static int16_t voltage_lvl_in_mill_volts;
 const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(0); /**< Declaring an instance of nrf_drv_rtc for RTC0. */
 
-// CHECK nRF5_SDK_16.0.0_98a08e2/examples//peripheral/rtc/main.c
-
 static void rtc_handler(nrf_drv_rtc_int_type_t int_type) {
   if (int_type == NRF_DRV_RTC_INT_COMPARE0) {
-    nrf_gpio_pin_toggle(LED_1);
     nrf_drv_saadc_sample();
     nrf_drv_rtc_counter_clear(&rtc);
-  } else if (int_type == NRF_DRV_RTC_INT_TICK) {
-    nrf_gpio_pin_toggle(LED_2);
+    //nrf_pwr_mgmt_shutdown(NRF_PWR_MGMT_SHUTDOWN_GOTO_SYSOFF);
   }
 }
 
@@ -141,8 +137,14 @@ void saadc_init(void) {
   nrf_saadc_channel_config_t channel_config =
       NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1); // pin P0.03
 
-  channel_config.reference = NRF_SAADC_REFERENCE_VDD4; // VDD/4 as reference.
-  channel_config.gain = SAADC_CH_CONFIG_GAIN_Gain1;    // 1x Gain
+  channel_config.reference = NRF_SAADC_REFERENCE_INTERNAL;  // 0.6V as reference.
+  channel_config.gain = SAADC_CH_CONFIG_GAIN_Gain1_5;       // 1x Gain. Max. SAADC Input Voltage 0.6V/(1/5)=3.0V
+  channel_config.acq_time = NRF_SAADC_ACQTIME_40US;         // Max. source resisance up to 800 kohm
+//  channel_config.mode =NRF_SAADC_MODE_SINGLE_ENDED;         // Set SAADC as single ended
+//  channel_config.pin_p = NRF_SAADC_INPUT_AIN0;
+//  channel_config.pin_n = NRF_SAADC_INPUT_DISABLED;
+//  channel_config.resistor_p = NRF_SAADC_RESISTOR_DISABLED;  // Disable pullup resistor on the input pin
+//  channel_config.resistor_n = NRF_SAADC_RESISTOR_DISABLED;  // Disable pulldown resistor on the input pin
 
   err_code = nrf_drv_saadc_init(&saadc_config, saadc_callback);
   APP_ERROR_CHECK(err_code);
@@ -158,7 +160,14 @@ static void leds_config(void) {
   bsp_board_init(BSP_INIT_LEDS);
 }
 
-int main(void) {
+static void pwr_mgmt_init()
+{
+  ret_code_t err_code;
+  err_code = nrf_pwr_mgmt_init();
+  APP_ERROR_CHECK(err_code);
+}
+
+ int main(void) {
   uint32_t err_code = NRF_LOG_INIT(NULL);
   APP_ERROR_CHECK(err_code);
 
@@ -168,6 +177,7 @@ int main(void) {
   saadc_init();
   lfclk_config();
   rtc_config();
+  pwr_mgmt_init();
 
   nrf_gpio_cfg_output(LED_RED);
   nrf_gpio_cfg_output(LED_GRN);
@@ -175,8 +185,12 @@ int main(void) {
   int x;
 
   while (1) {
-    //nrf_drv_saadc_sample();
+    //();
     //err_code = sd_app_evt_wait();
     //nrf_delay_ms(1000);
+    if(NRF_LOG_PROCESS() == false)
+    {
+      nrf_pwr_mgmt_run();
+    }
   }
 }
