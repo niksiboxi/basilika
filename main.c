@@ -35,6 +35,7 @@
 #define LED_RED 4
 #define LED_GRN 28
 #define LED_BLU 29
+#define BASE    30
 
 #define COMPARE_COUNTERTIME (10UL) /**< Get Compare event COMPARE_TIME seconds after the counter starts from 0. */
 
@@ -48,10 +49,13 @@ const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(0); /**< Declaring an instance of
 
 static void rtc_handler(nrf_drv_rtc_int_type_t int_type) {
   if (int_type == NRF_DRV_RTC_INT_COMPARE0) {
+    nrf_gpio_pin_set(BASE);
     nrf_drv_saadc_sample();
+    nrf_delay_ms(10);
     nrf_drv_rtc_counter_clear(&rtc);
     //nrf_pwr_mgmt_shutdown(NRF_PWR_MGMT_SHUTDOWN_GOTO_SYSOFF);
   }
+  else nrf_gpio_pin_clear(BASE);
 }
 
 /** @brief Function starting the internal LFCLK XTAL oscillator.
@@ -89,11 +93,11 @@ static void rtc_config(void) {
 
 // For money tree
 void rgb_led_ctrl(int sample) {
-  if (sample > 102) { // Oversaturation > 40%
+  if (sample > 28) { // Oversaturation > 40%
     nrf_gpio_pin_clear(LED_RED);
     nrf_gpio_pin_clear(LED_GRN);
     nrf_gpio_pin_set(LED_BLU);
-  } else if (sample >= 54 && sample <= 102) { // Available Water 21%...40%
+  } else if (sample >= 15 && sample <= 28) { // Available Water 21%...40%
     nrf_gpio_pin_clear(LED_RED);
     nrf_gpio_pin_set(LED_GRN);
     nrf_gpio_pin_clear(LED_BLU);
@@ -139,7 +143,7 @@ void saadc_init(void) {
 
   channel_config.reference = NRF_SAADC_REFERENCE_INTERNAL;  // 0.6V as reference.
   channel_config.gain = SAADC_CH_CONFIG_GAIN_Gain1_5;       // 1x Gain. Max. SAADC Input Voltage 0.6V/(1/5)=3.0V
-  channel_config.acq_time = NRF_SAADC_ACQTIME_40US;         // Max. source resisance up to 800 kohm
+  channel_config.acq_time = NRF_SAADC_ACQTIME_3US;          // Max. source resisance up to 800 kohm
 //  channel_config.mode =NRF_SAADC_MODE_SINGLE_ENDED;         // Set SAADC as single ended
 //  channel_config.pin_p = NRF_SAADC_INPUT_AIN0;
 //  channel_config.pin_n = NRF_SAADC_INPUT_DISABLED;
@@ -182,12 +186,9 @@ static void pwr_mgmt_init()
   nrf_gpio_cfg_output(LED_RED);
   nrf_gpio_cfg_output(LED_GRN);
   nrf_gpio_cfg_output(LED_BLU);
-  int x;
+  nrf_gpio_cfg_output(BASE);
 
   while (1) {
-    //();
-    //err_code = sd_app_evt_wait();
-    //nrf_delay_ms(1000);
     if(NRF_LOG_PROCESS() == false)
     {
       nrf_pwr_mgmt_run();
