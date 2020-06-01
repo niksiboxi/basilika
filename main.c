@@ -1,69 +1,74 @@
-/**
- * Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
- *
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form, except as embedded into a Nordic
- *    Semiconductor ASA integrated circuit in a product or a software update for
- *    such product, must reproduce the above copyright notice, this list of
- *    conditions and the following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. Neither the name of Nordic Semiconductor ASA nor the names of its
- *    contributors may be used to endorse or promote products derived from this
- *    software without specific prior written permission.
- *
- * 4. This software, with or without modification, must only be used with a
- *    Nordic Semiconductor ASA integrated circuit.
- *
- * 5. Any software provided in binary form under this license must not be reverse
- *    engineered, decompiled, modified and/or disassembled.
- *
- * THIS SOFTWARE IS PROVIDED BY NORDIC SEMICONDUCTOR ASA "AS IS" AND ANY EXPRESS
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- */
 #include "app_error.h"
 #include "boards.h"
-#include "nrf_drv_spis.h"
+#include "nordic_common.h"
+#include "nrf_drv_saadc.h"
 #include "nrf_gpio.h"
-#include "sdk_config.h"
-#include <string.h>
-
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
+#include "sdk_config.h"
+#include <string.h>
 
-int main(void)
+#define SAMPLES_IN_BUFFER 1
+#define NPN_TR_BASE 30
 
-{
-  ret_code_t err_code;
-  NRF_POWER->TASKS_CONSTLAT = 1;
+static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
+nrf_saadc_value_t adc_result;
+static bool m_saadc_initialized = false;
 
-  err_code = NRF_LOG_INIT(NULL);
-  APP_ERROR_CHECK(err_code);
+static const nrf_drv_saadc_config_t saadc_config =
+    {
+        NRF_SAADC_RESOLUTION_8BIT,
+        NRF_SAADC_OVERSAMPLE_DISABLED,
+        0,
+        true};
+
+void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
+  if (p_event->type == NRF_DRV_SAADC_EVT_DONE) {
+    APP_ERROR_CHECK(nrf_drv_saadc_buffer_convert(p_event->data.done.p_buffer, SAMPLES_IN_BUFFER));
+
+    adc_result = p_event->data.done.p_buffer[0];
+
+    NRF_LOG_INFO("ADC: %d", adc_result);
+
+    //    nrf_drv_saadc_uninit();
+    //    NRF_SAADC->INTENCLR = (SAADC_INTENCLR_END_Clear << SAADC_INTENCLR_END_Pos);
+    //    m_saadc_initialized = false;
+  }
+}
+
+void saadc_init(void) {
+  nrf_saadc_channel_config_t channel_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1); // Pin P0.03
+
+  channel_config.reference = NRF_SAADC_REFERENCE_VDD4;
+  channel_config.gain = SAADC_CH_CONFIG_GAIN_Gain1_6;
+  channel_config.acq_time = NRF_SAADC_ACQTIME_3US;
+
+  APP_ERROR_CHECK(nrf_drv_saadc_init(&saadc_config, saadc_callback));
+
+  APP_ERROR_CHECK(nrf_drv_saadc_channel_init(0, &channel_config));
+
+  APP_ERROR_CHECK(nrf_drv_saadc_buffer_convert(m_buffer, SAMPLES_IN_BUFFER));
+}
+
+int main(void) {
+  APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
 
   NRF_LOG_DEFAULT_BACKENDS_INIT();
 
-  NRF_LOG_INFO("Hello World");
+  nrf_gpio_cfg_output(NPN_TR_BASE);
+  nrf_gpio_pin_set(NPN_TR_BASE);
+
+  saadc_init();
+
+  NRF_LOG_INFO("Init: done...");
 
   while (1) {
-    __WFI(); // Wait for interrupt
-    __WFE(); // Wait for an Event
-    NRF_LOG_FLUSH();
+    nrf_drv_saadc_sample();
+    // Make sure any pending events are cleared
+    __SEV();
+    __WFE();
+    // Enter System ON sleep mode
+    __WFE();
   }
 }
