@@ -1,6 +1,7 @@
 #include "app_error.h"
 #include "boards.h"
 #include "nordic_common.h"
+#include "nrf_drv_rtc.h"
 #include "nrf_drv_saadc.h"
 #include "nrf_gpio.h"
 #include "nrf_log.h"
@@ -11,11 +12,15 @@
 
 #define SAMPLES_IN_BUFFER 1
 #define NPN_TR_BASE 30
+#define COMPARE_COUNTERTIME (10UL) /**< Get Compare event COMPARE_TIME seconds after the counter starts from 0. */
 
 static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
 nrf_saadc_value_t adc_result;
 static bool m_saadc_initialized = false;
 
+const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(0); /**< Declaring an instance of nrf_drv_rtc for RTC0. */
+
+/* SAADC Driver Configuration */
 static const nrf_drv_saadc_config_t saadc_config =
     {
         NRF_SAADC_RESOLUTION_8BIT,
@@ -23,6 +28,7 @@ static const nrf_drv_saadc_config_t saadc_config =
         0,
         true};
 
+/* SAADC Callback */
 void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
   if (p_event->type == NRF_DRV_SAADC_EVT_DONE) {
     APP_ERROR_CHECK(nrf_drv_saadc_buffer_convert(p_event->data.done.p_buffer, SAMPLES_IN_BUFFER));
@@ -49,6 +55,29 @@ void saadc_init(void) {
   APP_ERROR_CHECK(nrf_drv_saadc_channel_init(0, &channel_config));
 
   APP_ERROR_CHECK(nrf_drv_saadc_buffer_convert(m_buffer, SAMPLES_IN_BUFFER));
+}
+
+/* Function to handling the RTC0 interrupts.
+ * Triggered on TICK and COMPARE0 match */
+static void rtc_handler(nrf_drv_rtc_int_type_t int_type) {
+  if (int_type == NRF_DRV_RTC_INT_COMPARE0) {
+  }
+}
+
+static void rtc_config(void) {
+  // Enable RTC instance
+  nrf_drv_rtc_config_t config = NRF_DRV_RTC_DEFAULT_CONFIG;
+  config.prescaler = 4095;
+  APP_ERROR_CHECK(nrf_drv_rtc_init(&rtc, &config, rtc_handler));
+
+  // Enable tick event & interrupt
+  nrf_drv_rtc_tick_enable(&rtc, true);
+
+  // Set compare channel to trigger interrupt after COMPARE_COUNTERTIME seconds
+  APP_ERROR_CHECK(nrf_drv_rtc_cc_set(&rtc, 0, COMPARE_COUNTERTIME * 8, true));
+
+  // Power on RTC instance
+  nrf_drv_rtc_enable(&rtc);
 }
 
 int main(void) {
