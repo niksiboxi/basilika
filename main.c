@@ -40,9 +40,6 @@ void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
     NRF_LOG_INFO("ADC: %d", adc_result);
 
     m_sampling = false;
-    //nrf_drv_saadc_uninit();
-    //    NRF_SAADC->INTENCLR = (SAADC_INTENCLR_END_Clear << SAADC_INTENCLR_END_Pos);
-    //    m_saadc_initialized = false;
   }
 }
 
@@ -79,7 +76,7 @@ static void saadc_init_sample_uninit(void) {
   saadc_uninit();
 }
 
-static void lfclk_config(void){
+static void lfclk_config(void) {
   APP_ERROR_CHECK(nrf_drv_clock_init());
 
   nrf_drv_clock_lfclk_request(NULL);
@@ -92,6 +89,7 @@ static void rtc_handler(nrf_drv_rtc_int_type_t int_type) {
   if (int_type == NRF_DRV_RTC_INT_COMPARE0) {
     NRF_LOG_INFO("HELLO WORLD!");
     saadc_init_sample_uninit();
+    nrf_drv_rtc_counter_clear(&rtc);
   }
 }
 
@@ -121,9 +119,9 @@ int main(void) {
 
   NRF_LOG_INFO("Init: done...");
 
+  saadc_init_sample_uninit();
+
   while (1) {
-    //nrf_drv_saadc_sample();
-    saadc_init_sample_uninit();
     // Make sure any pending events are cleared
     __SEV();
     __WFE();
