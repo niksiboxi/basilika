@@ -250,22 +250,24 @@ void spi_config(void) {
 }
 
 void send_command(uint8_t command) {
-  uint8_t cmd[] = {0};
+  uint8_t cmd[1] = {0};
+  uint8_t rx_buf[] = {0};
   nrf_gpio_pin_clear(SPI_DC_PIN); // Low for command
 
   cmd[0] = command;
 
-  while (nrf_drv_spi_transfer(&spi, cmd, 1, NULL, NULL) == NRF_ERROR_BUSY)
+  while (nrf_drv_spi_transfer(&spi, cmd, 1, rx_buf, 1) == NRF_ERROR_BUSY)
     ;
 }
 
 void send_data(uint8_t data) {
-  uint8_t dt[] = {0};
+  uint8_t dt[1] = {0};
+  uint8_t rx_buf[] = {0};
   nrf_gpio_pin_set(SPI_DC_PIN); // High for data
 
   dt[0] = data;
 
-  while (nrf_drv_spi_transfer(&spi, dt, 1, NULL, NULL) == NRF_ERROR_BUSY)
+  while (nrf_drv_spi_transfer(&spi, dt, 1, rx_buf, 1) == NRF_ERROR_BUSY)
     ;
 }
 
