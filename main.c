@@ -6,6 +6,7 @@
 #include "nrf_drv_saadc.h"
 #include "nrf_drv_spi.h"
 #include "nrf_gpio.h"
+#include "nrf_delay.h"
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
@@ -330,6 +331,15 @@ void ePaper_init(void) {
   wait_until_idle();
 }
 
+void ePaper_reset(void){
+  nrf_gpio_pin_set(SPI_RST_PIN);
+  nrf_delay_ms(200);
+  nrf_gpio_pin_clear(SPI_RST_PIN);
+  nrf_delay_ms(10);
+  nrf_gpio_pin_set(SPI_RST_PIN);
+  nrf_delay_ms(200);
+}
+
 int main(void) {
   APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
 
@@ -342,7 +352,8 @@ int main(void) {
   saadc_init_sample_uninit();
   spi_config();
 
-  ePaper_init();
+  //ePaper_init();
+  ePaper_reset();
 
   while (1) {
     // Make sure any pending events are cleared
