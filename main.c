@@ -41,87 +41,6 @@ static volatile bool spi_xfer_done;
 static uint8_t m_tx_buf[] = TEST_STRING;
 static const uint8_t m_length = sizeof(m_tx_buf);
 
-const uint8_t lut_full_update[] = {
-    0x80,
-    0x60,
-    0x40,
-    0x00,
-    0x00,
-    0x00,
-    0x00, //LUT0: BB:     VS 0 ~7
-    0x10,
-    0x60,
-    0x20,
-    0x00,
-    0x00,
-    0x00,
-    0x00, //LUT1: BW:     VS 0 ~7
-    0x80,
-    0x60,
-    0x40,
-    0x00,
-    0x00,
-    0x00,
-    0x00, //LUT2: WB:     VS 0 ~7
-    0x10,
-    0x60,
-    0x20,
-    0x00,
-    0x00,
-    0x00,
-    0x00, //LUT3: WW:     VS 0 ~7
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-    0x00, //LUT4: VCOM:   VS 0 ~7
-
-    0x03,
-    0x03,
-    0x00,
-    0x00,
-    0x02, // TP0 A~D RP0
-    0x09,
-    0x09,
-    0x00,
-    0x00,
-    0x02, // TP1 A~D RP1
-    0x03,
-    0x03,
-    0x00,
-    0x00,
-    0x02, // TP2 A~D RP2
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-    0x00, // TP3 A~D RP3
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-    0x00, // TP4 A~D RP4
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-    0x00, // TP5 A~D RP5
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-    0x00, // TP6 A~D RP6
-
-    0x15,
-    0x41,
-    0xA8,
-    0x32,
-    0x30,
-    0x0A,
-};
-
 const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(0); /**< Declaring an instance of nrf_drv_rtc for RTC0. */
 
 /* SAADC Driver Configuration */
@@ -272,74 +191,6 @@ void send_data(uint8_t data) {
     ;
 }
 
-void ePaper_init(void) {
-  send_command(0x12); // Soft Reset
-  wait_until_idle();
-
-  send_command(0x74); // set analog block control
-  send_data(0x54);
-  send_command(0x7E); // set digital block contorl
-  send_data(0x3B);
-
-  send_command(0x01); // Driver output control
-  send_data(0xF9);
-  send_data(0x00);
-  send_data(0x00);
-
-  send_command(0x44); // data entry mode
-  send_data(0x01);
-
-  send_command(0x44); //set Ram-X address start/end position
-  send_data(0x00);
-  send_data(0x0F); //0x0C-->(15+1)*8=128
-
-  send_command(0x45); //set Ram-Y address start/end position
-  send_data(0xF9);    //0xF9-->(249+1)=250
-  send_data(0x00);
-  send_data(0x00);
-  send_data(0x00);
-
-  send_command(0x3C); //BorderWavefrom
-  send_data(0x55);
-
-  send_command(0x2C); // VCOM Voltage
-  send_data(0x55);
-
-  send_command(0x03);
-  send_data(lut_full_update[70]);
-
-  send_command(0x04);
-  send_data(lut_full_update[71]);
-  send_data(lut_full_update[72]);
-  send_data(lut_full_update[73]);
-
-  send_command(0x3A); // Dummy line
-  send_data(lut_full_update[74]);
-  send_command(0x3B); // Gate time
-  send_data(lut_full_update[75]);
-
-  send_command(0x32);
-  for (int i = 0; i < 70; i++) {
-    send_data(lut_full_update[i]);
-  }
-
-  send_command(0x4E); // set RAM x address count to 0
-  send_data(0x00);
-  send_command(0x4F); // set RAM y address count 0x127
-  send_data(0xF9);
-  send_data(0x00);
-  wait_until_idle();
-}
-
-void ePaper_reset(void){
-  nrf_gpio_pin_set(SPI_RST_PIN);
-  nrf_delay_ms(200);
-  nrf_gpio_pin_clear(SPI_RST_PIN);
-  nrf_delay_ms(10);
-  nrf_gpio_pin_set(SPI_RST_PIN);
-  nrf_delay_ms(200);
-}
-
 int main(void) {
   APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
 
@@ -351,9 +202,6 @@ int main(void) {
   rtc_config();
   saadc_init_sample_uninit();
   spi_config();
-
-  //ePaper_init();
-  ePaper_reset();
 
   while (1) {
     // Make sure any pending events are cleared
