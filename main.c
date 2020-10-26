@@ -14,7 +14,6 @@
 #include <inttypes.h>
 #include <string.h>
 
-#include "EPD_2in13_V2.h"
 
 #define SAMPLES_IN_BUFFER 1
 #define SPI_INSTANCE 0
@@ -175,22 +174,38 @@ void send_command(uint8_t command) {
   uint8_t cmd[1] = {0};
   uint8_t rx_buf[] = {0};
   nrf_gpio_pin_clear(SPI_DC_PIN); // Low for command
+  nrf_gpio_pin_clear(SPI_SS_PIN); // Low for command
 
   cmd[0] = command;
 
   while (nrf_drv_spi_transfer(&spi, cmd, 1, rx_buf, 1) == NRF_ERROR_BUSY)
     ;
+
+  nrf_gpio_pin_set(SPI_SS_PIN);
 }
 
 void send_data(uint8_t data) {
   uint8_t dt[1] = {0};
   uint8_t rx_buf[] = {0};
   nrf_gpio_pin_set(SPI_DC_PIN); // High for data
+  nrf_gpio_pin_clear(SPI_SS_PIN); // Low for data
 
   dt[0] = data;
 
   while (nrf_drv_spi_transfer(&spi, dt, 1, rx_buf, 1) == NRF_ERROR_BUSY)
     ;
+
+  nrf_gpio_pin_set(SPI_SS_PIN);
+}
+
+void software_reset(void)
+{
+  nrf_gpio_pin_set(SPI_RST_PIN);
+  nrf_delay_ms(200);
+  nrf_gpio_pin_clear(SPI_RST_PIN);
+  nrf_delay_ms(10);
+  nrf_gpio_pin_set(SPI_RST_PIN);
+  nrf_delay_ms(200);
 }
 
 int main(void) {
@@ -204,8 +219,24 @@ int main(void) {
   rtc_config();
   saadc_init_sample_uninit();
   spi_config();
+  software_reset();
 
-  EPD_2IN13_V2_Init(0);
+
+  // Clear Display
+  send_command(0x24);
+  for(uint8_t j = 0; j < 250; j++){
+    for(uint8_t i = 0; i < 122; i++){
+      send_data(0xFF);
+    }
+  }
+
+  // Turn on Display
+  send_command(0x22);
+  send_data(0xC7);
+  send_command(0x20);
+  wait_until_idle();
+
+  
 
   while (1) {
     // Make sure any pending events are cleared
