@@ -14,6 +14,8 @@
 #include <inttypes.h>
 #include <string.h>
 
+#include "EPD_2in13_V2.h"
+
 #define SAMPLES_IN_BUFFER 1
 #define SPI_INSTANCE 0
 #define NPN_TR_BASE 30
@@ -202,6 +204,8 @@ int main(void) {
   rtc_config();
   saadc_init_sample_uninit();
   spi_config();
+
+  EPD_2IN13_V2_Init(0);
 
   while (1) {
     // Make sure any pending events are cleared
