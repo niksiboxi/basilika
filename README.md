@@ -43,11 +43,12 @@ Real time counter driver.
 |	 |emitter	|VCC		|
 
 ## Digital Ouput Formula
-### RESULT = [V(P) - V(N)] * GAIN/REFERENCE * 2^(RESOLUTION - m)
-### V(P) : the voltage at input P
-### V(N) : the voltage at input N
-### GAIN : the selected gain setting
-### REFERENCE : the selected reference voltage
+The formula is used to calculate the output voltage:
+	$result = [V(P) - V(N)] * gain/reference * 2^(resolution - m)$
+* **V(P)** : the voltage at input P
+* **V(N)** : the voltage at input N
+* **gain** : the selected gain setting
+* **reference** : the selected reference voltage
 
 # Repository Contents
 * **/config** - Project configuration settings
