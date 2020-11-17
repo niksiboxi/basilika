@@ -1,5 +1,15 @@
 # basilika
-Building a Soil Moisture Meter
+A soil moisture sensor version 1. Built on top of Nordic nRF5 SDK 15. 
+
+# Setting up
+## SDK 15.3
+Download [Nordic SDK15.3](https://developer.nordicsemi.com/nRF5_SDK/nRF5_SDK_v15.x.x/) and install it at the project root.
+
+## Toolchain
+Segger Embedded Studio (SES) is recommended to use for developing. Start SES and open 'basilika_pca10040.emProject' at root level.
+
+# Usage
+Compile and flash the project to your board using SES.
 
 # Analog Soil Mosture Sensor
 Power Supply: 3.3v or 5V
