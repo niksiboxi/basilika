@@ -42,12 +42,13 @@ Real time counter driver.
 |VDD	 |collector	|		|
 |	 |emitter	|VCC		|
 
-## Digital Ouput Formula
+## Digital Output Formula
 The formula is used to calculate the output voltage:
-	$result = [V(P) - V(N)] * gain/reference * 2^(resolution - m)$
+`result = [V(P) - V(N)] * gain/reference * 2^(resolution - m)`
+Where
 * **V(P)** : the voltage at input P
 * **V(N)** : the voltage at input N
-* **gain** : the selected gain setting
+* **gain** : the selected gain
 * **reference** : the selected reference voltage
 
 # Repository Contents
