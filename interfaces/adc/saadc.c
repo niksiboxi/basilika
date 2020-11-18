@@ -31,7 +31,9 @@ void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
   }
 }
 
-void saadc_init(void) {
+ret_code_t saadc_init(void) {
+  ret_code_t err_code = NRF_SUCCESS;
+
   nrf_saadc_channel_config_t channel_config =
       NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1); // Pin P0.03
 
@@ -39,19 +41,26 @@ void saadc_init(void) {
   channel_config.gain = SAADC_CH_CONFIG_GAIN_Gain1_6;
   channel_config.acq_time = NRF_SAADC_ACQTIME_3US;
 
-  APP_ERROR_CHECK(nrf_drv_saadc_init(&saadc_config, saadc_callback));
+  err_code |= nrf_drv_saadc_init(&saadc_config, saadc_callback);
 
-  APP_ERROR_CHECK(nrf_drv_saadc_channel_init(0, &channel_config));
+  err_code |= nrf_drv_saadc_channel_init(0, &channel_config);
 
-  APP_ERROR_CHECK(nrf_drv_saadc_buffer_convert(m_buffer, SAMPLES_IN_BUFFER));
+  err_code |= nrf_drv_saadc_buffer_convert(m_buffer, SAMPLES_IN_BUFFER);
+
+  return err_code;
 }
 
-void saadc_uninit(void) {
+ret_code_t saadc_uninit(void) {
   nrf_drv_saadc_uninit();
+  
+  return NRF_SUCCESS;
 }
 
-void saadc_sample(void) {
+ret_code_t saadc_sample(void) {
+  ret_code_t error_code = NRF_SUCCESS;
   m_sampling = true;
 
-  APP_ERROR_CHECK(nrf_drv_saadc_sample());
+  error_code = nrf_drv_saadc_sample();
+
+  return error_code;
 }
