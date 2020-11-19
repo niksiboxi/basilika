@@ -4,11 +4,16 @@
 
 #include "nrf_drv_saadc.h"
 #include "nrf_error.h"
+#include "nrf_log.h"
+#include "nrf_gpio.h"
+#include "saadc.h"
 
 #define SAMPLES_IN_BUFFER 1
+#define NPN_TR_BASE 30
 
 static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
-static nrf_saadc_value_t adc_result;
+saadc_config_t adc;
+
 static bool m_saadc_initialized = false;
 static volatile bool m_sampling = false;
 
@@ -25,7 +30,11 @@ void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
   if (p_event->type == NRF_DRV_SAADC_EVT_DONE) {
     APP_ERROR_CHECK(nrf_drv_saadc_buffer_convert(p_event->data.done.p_buffer, SAMPLES_IN_BUFFER)); // start conversion in non-blocking mode
 
-    adc_result = p_event->data.done.p_buffer[0];
+    adc.adc = p_event->data.done.p_buffer[0];
+
+    //adc_result = p_event->data.done.p_buffer[0];
+
+    //NRF_LOG_INFO("ADC: %d", adc_result);
 
     m_sampling = false;
   }
@@ -52,7 +61,7 @@ ret_code_t saadc_init(void) {
 
 ret_code_t saadc_uninit(void) {
   nrf_drv_saadc_uninit();
-  
+
   return NRF_SUCCESS;
 }
 
@@ -63,4 +72,15 @@ ret_code_t saadc_sample(void) {
   error_code = nrf_drv_saadc_sample();
 
   return error_code;
+}
+
+void saadc_init_sample_uninit(void) {
+  nrf_gpio_pin_set(NPN_TR_BASE);
+  saadc_init();
+  saadc_sample();
+  NRF_LOG_INFO("ADC: %d", adc.adc);
+  while (m_sampling == true)
+    ;
+  saadc_uninit();
+  nrf_gpio_pin_clear(NPN_TR_BASE);
 }
