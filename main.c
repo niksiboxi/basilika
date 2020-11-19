@@ -15,16 +15,6 @@
 
 static volatile bool m_sampling = false;
 
-void saadc_init_sample_uninit(void) {
-  nrf_gpio_pin_set(NPN_TR_BASE);
-  saadc_init();
-  saadc_sample();
-  while (m_sampling == true)
-    ;
-  saadc_uninit();
-  nrf_gpio_pin_clear(NPN_TR_BASE);
-}
-
 static void lfclk_config(void) {
   APP_ERROR_CHECK(nrf_drv_clock_init());
 
@@ -34,13 +24,15 @@ static void lfclk_config(void) {
 int main(void) {
   APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
 
-  //NRF_LOG_DEFAULT_BACKENDS_INIT();
+  NRF_LOG_DEFAULT_BACKENDS_INIT();
 
   nrf_gpio_cfg_output(NPN_TR_BASE);
 
   lfclk_config();
   rtc_config();
   saadc_init_sample_uninit();
+
+  NRF_LOG_INFO("Initialized...");
 
   while (1) {
     // Make sure any pending events are cleared
