@@ -1,4 +1,5 @@
 #include "app_error.h"
+#include "application_config.h"
 #include "boards.h"
 #include "nordic_common.h"
 #include "nrf_drv_clock.h"
@@ -10,8 +11,6 @@
 #include "saadc.h"
 #include "sdk_config.h"
 #include <string.h>
-
-#define NPN_TR_BASE 30
 
 static volatile bool m_sampling = false;
 
@@ -26,7 +25,7 @@ int main(void) {
 
   NRF_LOG_DEFAULT_BACKENDS_INIT();
 
-  nrf_gpio_cfg_output(NPN_TR_BASE);
+  nrf_gpio_cfg_output(TBASE_SET_PIN);
 
   lfclk_config();
   rtc_config();
