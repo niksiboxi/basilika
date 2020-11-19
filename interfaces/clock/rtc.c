@@ -5,7 +5,6 @@
  */
 
 #include "application_config.h"
-#include "nrf_drv_clock.h"
 #include "nrf_drv_rtc.h"
 #include "saadc.h"
 
