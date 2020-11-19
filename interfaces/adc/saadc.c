@@ -1,6 +1,8 @@
-/* A SAADC Library Based on Nordic SDK
-*
-*/
+/*
+ * SAADC interface implementation on Nordic SDK16 / nRF52
+ *
+ * Author: Nikita Pavlov <nikita.pavlov@outlook.com>
+ */
 
 #include "saadc.h"
 #include "application_config.h"

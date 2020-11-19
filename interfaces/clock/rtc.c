@@ -1,5 +1,7 @@
-/* RTC Clock Library Based on Nordic SDK
+/*
+ * RTC interface implementation on Nordic SDK16 / nRF52
  *
+ * Author: Nikita Pavlov <nikita.pavlov@outlook.com>
  */
 
 #include "application_config.h"

@@ -1,7 +1,7 @@
 #ifndef APPLICATION_CONFIG_H
 #define APPLICATION_CONFIG_H
 
-// Saadc Configuration
+// SAADC Configuration
 #define SAMPLES_IN_BUFFER 1 // Size of SAADC buffer
 
 // RTC Configuration
