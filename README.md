@@ -2,11 +2,11 @@
 A soil moisture sensor version 1. Built on top of Nordic nRF5 SDK 15. 
 
 # Setting up
-## SDK 15.3
+## SDK 16.0
 Download [Nordic SDK16.0](https://developer.nordicsemi.com/nRF5_SDK/nRF5_SDK_v16.x.x/) and install it at the project root.
 
 ## Toolchain
-Segger Embedded Studio (SES) is recommended to use for developing. Start SES and open 'basilika_pca10040.emProject' at the root level.
+Segger Embedded Studio [SES](https://www.segger.com/products/development-tools/embedded-studio/) is recommended to use for developing. Start SES and open `basilika_pca10040.emProject` at the root level.
 
 # Usage
 Compile and flash the project to your board using SES.
