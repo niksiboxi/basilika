@@ -12,7 +12,7 @@
 #define NPN_TR_BASE 30
 
 static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
-saadc_config_t adc;
+saadc_config_t adc_reading;
 
 static bool m_saadc_initialized = false;
 static volatile bool m_sampling = false;
@@ -29,12 +29,8 @@ static const nrf_drv_saadc_config_t saadc_config =
 void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
   if (p_event->type == NRF_DRV_SAADC_EVT_DONE) {
     APP_ERROR_CHECK(nrf_drv_saadc_buffer_convert(p_event->data.done.p_buffer, SAMPLES_IN_BUFFER)); // start conversion in non-blocking mode
-
-    adc.adc = p_event->data.done.p_buffer[0];
-
-    //adc_result = p_event->data.done.p_buffer[0];
-
-    //NRF_LOG_INFO("ADC: %d", adc_result);
+    
+    adc_reading.adc = p_event->data.done.p_buffer[0];
 
     m_sampling = false;
   }
@@ -78,7 +74,7 @@ void saadc_init_sample_uninit(void) {
   nrf_gpio_pin_set(NPN_TR_BASE);
   saadc_init();
   saadc_sample();
-  NRF_LOG_INFO("ADC: %d", adc.adc);
+  NRF_LOG_INFO("ADC: %d", adc_reading.adc);
   while (m_sampling == true)
     ;
   saadc_uninit();
