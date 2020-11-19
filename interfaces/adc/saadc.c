@@ -1,15 +1,15 @@
-/* A SAADC Library Based on Nordic SDK
-*
-*/
+/*
+ * SAADC interface implementation on Nordic SDK16 / nRF52
+ *
+ * Author: Nikita Pavlov <nikita.pavlov@outlook.com>
+ */
 
+#include "saadc.h"
+#include "application_config.h"
 #include "nrf_drv_saadc.h"
 #include "nrf_error.h"
-#include "nrf_log.h"
 #include "nrf_gpio.h"
-#include "saadc.h"
-
-#define SAMPLES_IN_BUFFER 1
-#define NPN_TR_BASE 30
+#include "nrf_log.h"
 
 static nrf_saadc_value_t m_buffer[SAMPLES_IN_BUFFER];
 saadc_config_t adc_reading;
@@ -29,7 +29,7 @@ static const nrf_drv_saadc_config_t saadc_config =
 void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
   if (p_event->type == NRF_DRV_SAADC_EVT_DONE) {
     APP_ERROR_CHECK(nrf_drv_saadc_buffer_convert(p_event->data.done.p_buffer, SAMPLES_IN_BUFFER)); // start conversion in non-blocking mode
-    
+
     adc_reading.adc = p_event->data.done.p_buffer[0];
 
     m_sampling = false;
@@ -71,12 +71,12 @@ ret_code_t saadc_sample(void) {
 }
 
 void saadc_init_sample_uninit(void) {
-  nrf_gpio_pin_set(NPN_TR_BASE);
+  nrf_gpio_pin_set(TBASE_SET_PIN);
   saadc_init();
   saadc_sample();
   NRF_LOG_INFO("ADC: %d", adc_reading.adc);
   while (m_sampling == true)
     ;
   saadc_uninit();
-  nrf_gpio_pin_clear(NPN_TR_BASE);
+  nrf_gpio_pin_clear(TBASE_SET_PIN);
 }

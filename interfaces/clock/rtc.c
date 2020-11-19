@@ -1,12 +1,13 @@
-/* RTC Clock Library Based on Nordic SDK
+/*
+ * RTC interface implementation on Nordic SDK16 / nRF52
  *
+ * Author: Nikita Pavlov <nikita.pavlov@outlook.com>
  */
 
+#include "application_config.h"
 #include "nrf_drv_clock.h"
 #include "nrf_drv_rtc.h"
 #include "saadc.h"
-
-#define COMPARE_COUNTERTIME (1UL) /**< Get Compare event COMPARE_TIME seconds after the counter starts from 0. */
 
 const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(0); /**< Declaring an instance of nrf_drv_rtc for RTC0. */
 
