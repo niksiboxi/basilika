@@ -1483,6 +1483,12 @@
 #define NRF_MEMOBJ_ENABLED 1
 #endif
 
+// <q> NRF_SECTION_ITER_ENABLED  - nrf_section_iter - Section iterator 
+
+#ifndef NRF_SECTION_ITER_ENABLED
+#define NRF_SECTION_ITER_ENABLED 1
+#endif
+
 // <q> NRF_SORTLIST_ENABLED  - nrf_sortlist - Sorted list
 
 #ifndef NRF_SORTLIST_ENABLED
@@ -4028,7 +4034,7 @@
 // <e> NRF_PWR_MGMT_CONFIG_LOG_ENABLED - Enables logging in the module.
 //==========================================================
 #ifndef NRF_PWR_MGMT_CONFIG_LOG_ENABLED
-#define NRF_PWR_MGMT_CONFIG_LOG_ENABLED 0
+#define NRF_PWR_MGMT_CONFIG_LOG_ENABLED 1
 #endif
 // <o> NRF_PWR_MGMT_CONFIG_LOG_LEVEL  - Default Severity level
 
@@ -4618,6 +4624,124 @@
 
 // </h>
 //==========================================================
+
+// <e> NRF_SDH_ENABLED - nrf_sdh - SoftDevice handler
+//==========================================================
+#ifndef NRF_SDH_ENABLED
+#define NRF_SDH_ENABLED 1
+#endif
+// <h> Dispatch model 
+
+// <e> NRF_SDH_SOC_ENABLED - nrf_sdh_soc - SoftDevice SoC event handler
+//==========================================================
+#ifndef NRF_SDH_SOC_ENABLED
+#define NRF_SDH_SOC_ENABLED 1
+#endif
+// <h> SoC Observers - Observers and priority levels
+
+//==========================================================
+// <o> NRF_SDH_SOC_OBSERVER_PRIO_LEVELS - Total number of priority levels for SoC observers. 
+// <i> This setting configures the number of priority levels available for the SoC event handlers.
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_SOC_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_SOC_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <o> NRF_SDH_SOC_STACK_OBSERVER_PRIO  
+// <i> This setting configures the priority with which SoC events are processed with respect to other events coming from the stack.
+// <i> Modify this setting if you need to have SoC events dispatched before or after other stack events, such as ANT or BLE.
+// <i> Zero is the highest priority.
+
+#ifndef NRF_SDH_SOC_STACK_OBSERVER_PRIO
+#define NRF_SDH_SOC_STACK_OBSERVER_PRIO 0
+#endif
+
+// <o> NRF_SDH_STACK_OBSERVER_PRIO_LEVELS - Total number of priority levels for stack event observers. 
+// <i> This setting configures the number of priority levels available for the SoftDevice stack event handlers (ANT, BLE, SoC).
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_STACK_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_STACK_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <h> SoC Observers priorities - Invididual priorities
+
+//==========================================================
+
+// <o> CLOCK_CONFIG_SOC_OBSERVER_PRIO  
+// <i> Priority with which SoC events are dispatched to the Clock driver.
+
+#ifndef CLOCK_CONFIG_SOC_OBSERVER_PRIO
+#define CLOCK_CONFIG_SOC_OBSERVER_PRIO 0
+#endif
+
+// <h> State Observers priorities - Invididual priorities
+
+//==========================================================
+// <o> CLOCK_CONFIG_STATE_OBSERVER_PRIO  
+// <i> Priority with which state events are dispatched to the Clock driver.
+
+#ifndef CLOCK_CONFIG_STATE_OBSERVER_PRIO
+#define CLOCK_CONFIG_STATE_OBSERVER_PRIO 0
+#endif
+
+// <o> NRF_SDH_STATE_OBSERVER_PRIO_LEVELS - Total number of priority levels for state observers. 
+// <i> This setting configures the number of priority levels available for the SoftDevice state event handlers.
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_STATE_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_STATE_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <h> Clock - SoftDevice clock configuration
+
+//==========================================================
+// <o> NRF_SDH_CLOCK_LF_SRC  - SoftDevice clock source.
+ 
+// <0=> NRF_CLOCK_LF_SRC_RC 
+// <1=> NRF_CLOCK_LF_SRC_XTAL 
+// <2=> NRF_CLOCK_LF_SRC_SYNTH 
+
+#ifndef NRF_SDH_CLOCK_LF_SRC
+#define NRF_SDH_CLOCK_LF_SRC 1
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_RC_CTIV - SoftDevice calibration timer interval. 
+#ifndef NRF_SDH_CLOCK_LF_RC_CTIV
+#define NRF_SDH_CLOCK_LF_RC_CTIV 0
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_RC_TEMP_CTIV - SoftDevice calibration timer interval under constant temperature. 
+// <i> How often (in number of calibration intervals) the RC oscillator shall be calibrated
+// <i>  if the temperature has not changed.
+
+#ifndef NRF_SDH_CLOCK_LF_RC_TEMP_CTIV
+#define NRF_SDH_CLOCK_LF_RC_TEMP_CTIV 0
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_ACCURACY  - External clock accuracy used in the LL to compute timing.
+ 
+// <0=> NRF_CLOCK_LF_ACCURACY_250_PPM 
+// <1=> NRF_CLOCK_LF_ACCURACY_500_PPM 
+// <2=> NRF_CLOCK_LF_ACCURACY_150_PPM 
+// <3=> NRF_CLOCK_LF_ACCURACY_100_PPM 
+// <4=> NRF_CLOCK_LF_ACCURACY_75_PPM 
+// <5=> NRF_CLOCK_LF_ACCURACY_50_PPM 
+// <6=> NRF_CLOCK_LF_ACCURACY_30_PPM 
+// <7=> NRF_CLOCK_LF_ACCURACY_20_PPM 
+// <8=> NRF_CLOCK_LF_ACCURACY_10_PPM 
+// <9=> NRF_CLOCK_LF_ACCURACY_5_PPM 
+// <10=> NRF_CLOCK_LF_ACCURACY_2_PPM 
+// <11=> NRF_CLOCK_LF_ACCURACY_1_PPM 
+
+#ifndef NRF_SDH_CLOCK_LF_ACCURACY
+#define NRF_SDH_CLOCK_LF_ACCURACY 7
+#endif
+
+// </h> 
+//==========================================================
+
 
 // <<< end of configuration section >>>
 #endif //SDK_CONFIG_H
