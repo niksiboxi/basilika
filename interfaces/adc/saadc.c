@@ -22,7 +22,7 @@ static const nrf_drv_saadc_config_t saadc_config =
     {
         NRF_SAADC_RESOLUTION_8BIT,
         NRF_SAADC_OVERSAMPLE_DISABLED,
-        0,
+        6,
         true};
 
 /* SAADC Callback */

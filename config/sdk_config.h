@@ -675,7 +675,7 @@
  
 
 #ifndef NRFX_RTC0_ENABLED
-#define NRFX_RTC0_ENABLED 1
+#define NRFX_RTC0_ENABLED 0
 #endif
 
 // <q> NRFX_RTC1_ENABLED  - Enable RTC1 instance
@@ -689,7 +689,7 @@
  
 
 #ifndef NRFX_RTC2_ENABLED
-#define NRFX_RTC2_ENABLED 0
+#define NRFX_RTC2_ENABLED 1
 #endif
 
 // <o> NRFX_RTC_MAXIMUM_LATENCY_US - Maximum possible time[us] in highest priority interrupt 
@@ -1481,6 +1481,12 @@
 
 #ifndef NRF_MEMOBJ_ENABLED
 #define NRF_MEMOBJ_ENABLED 1
+#endif
+
+// <q> NRF_SECTION_ITER_ENABLED  - nrf_section_iter - Section iterator 
+
+#ifndef NRF_SECTION_ITER_ENABLED
+#define NRF_SECTION_ITER_ENABLED 1
 #endif
 
 // <q> NRF_SORTLIST_ENABLED  - nrf_sortlist - Sorted list
@@ -4028,7 +4034,7 @@
 // <e> NRF_PWR_MGMT_CONFIG_LOG_ENABLED - Enables logging in the module.
 //==========================================================
 #ifndef NRF_PWR_MGMT_CONFIG_LOG_ENABLED
-#define NRF_PWR_MGMT_CONFIG_LOG_ENABLED 0
+#define NRF_PWR_MGMT_CONFIG_LOG_ENABLED 1
 #endif
 // <o> NRF_PWR_MGMT_CONFIG_LOG_LEVEL  - Default Severity level
 
@@ -4618,6 +4624,864 @@
 
 // </h>
 //==========================================================
+
+// <e> NRF_SDH_ENABLED - nrf_sdh - SoftDevice handler
+//==========================================================
+#ifndef NRF_SDH_ENABLED
+#define NRF_SDH_ENABLED 1
+#endif
+// <h> Dispatch model 
+
+// <e> NRF_SDH_SOC_ENABLED - nrf_sdh_soc - SoftDevice SoC event handler
+//==========================================================
+#ifndef NRF_SDH_SOC_ENABLED
+#define NRF_SDH_SOC_ENABLED 1
+#endif
+// <h> SoC Observers - Observers and priority levels
+
+//==========================================================
+// <o> NRF_SDH_SOC_OBSERVER_PRIO_LEVELS - Total number of priority levels for SoC observers. 
+// <i> This setting configures the number of priority levels available for the SoC event handlers.
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_SOC_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_SOC_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <o> NRF_SDH_SOC_STACK_OBSERVER_PRIO  
+// <i> This setting configures the priority with which SoC events are processed with respect to other events coming from the stack.
+// <i> Modify this setting if you need to have SoC events dispatched before or after other stack events, such as ANT or BLE.
+// <i> Zero is the highest priority.
+
+#ifndef NRF_SDH_SOC_STACK_OBSERVER_PRIO
+#define NRF_SDH_SOC_STACK_OBSERVER_PRIO 0
+#endif
+
+// <o> NRF_SDH_STACK_OBSERVER_PRIO_LEVELS - Total number of priority levels for stack event observers. 
+// <i> This setting configures the number of priority levels available for the SoftDevice stack event handlers (ANT, BLE, SoC).
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_STACK_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_STACK_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <h> SoC Observers priorities - Invididual priorities
+
+//==========================================================
+
+// <o> CLOCK_CONFIG_SOC_OBSERVER_PRIO  
+// <i> Priority with which SoC events are dispatched to the Clock driver.
+
+#ifndef CLOCK_CONFIG_SOC_OBSERVER_PRIO
+#define CLOCK_CONFIG_SOC_OBSERVER_PRIO 0
+#endif
+
+// <h> State Observers priorities - Invididual priorities
+
+//==========================================================
+// <o> CLOCK_CONFIG_STATE_OBSERVER_PRIO  
+// <i> Priority with which state events are dispatched to the Clock driver.
+
+#ifndef CLOCK_CONFIG_STATE_OBSERVER_PRIO
+#define CLOCK_CONFIG_STATE_OBSERVER_PRIO 0
+#endif
+
+// <o> NRF_SDH_STATE_OBSERVER_PRIO_LEVELS - Total number of priority levels for state observers. 
+// <i> This setting configures the number of priority levels available for the SoftDevice state event handlers.
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_STATE_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_STATE_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <h> Clock - SoftDevice clock configuration
+
+//==========================================================
+// <o> NRF_SDH_CLOCK_LF_SRC  - SoftDevice clock source.
+ 
+// <0=> NRF_CLOCK_LF_SRC_RC 
+// <1=> NRF_CLOCK_LF_SRC_XTAL 
+// <2=> NRF_CLOCK_LF_SRC_SYNTH 
+
+#ifndef NRF_SDH_CLOCK_LF_SRC
+#define NRF_SDH_CLOCK_LF_SRC 1
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_RC_CTIV - SoftDevice calibration timer interval. 
+#ifndef NRF_SDH_CLOCK_LF_RC_CTIV
+#define NRF_SDH_CLOCK_LF_RC_CTIV 0
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_RC_TEMP_CTIV - SoftDevice calibration timer interval under constant temperature. 
+// <i> How often (in number of calibration intervals) the RC oscillator shall be calibrated
+// <i>  if the temperature has not changed.
+
+#ifndef NRF_SDH_CLOCK_LF_RC_TEMP_CTIV
+#define NRF_SDH_CLOCK_LF_RC_TEMP_CTIV 0
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_ACCURACY  - External clock accuracy used in the LL to compute timing.
+ 
+// <0=> NRF_CLOCK_LF_ACCURACY_250_PPM 
+// <1=> NRF_CLOCK_LF_ACCURACY_500_PPM 
+// <2=> NRF_CLOCK_LF_ACCURACY_150_PPM 
+// <3=> NRF_CLOCK_LF_ACCURACY_100_PPM 
+// <4=> NRF_CLOCK_LF_ACCURACY_75_PPM 
+// <5=> NRF_CLOCK_LF_ACCURACY_50_PPM 
+// <6=> NRF_CLOCK_LF_ACCURACY_30_PPM 
+// <7=> NRF_CLOCK_LF_ACCURACY_20_PPM 
+// <8=> NRF_CLOCK_LF_ACCURACY_10_PPM 
+// <9=> NRF_CLOCK_LF_ACCURACY_5_PPM 
+// <10=> NRF_CLOCK_LF_ACCURACY_2_PPM 
+// <11=> NRF_CLOCK_LF_ACCURACY_1_PPM 
+
+#ifndef NRF_SDH_CLOCK_LF_ACCURACY
+#define NRF_SDH_CLOCK_LF_ACCURACY 7
+#endif
+
+// </h> 
+//==========================================================
+
+// <h> nRF_SoftDevice 
+
+//==========================================================
+// <e> NRF_SDH_BLE_ENABLED - nrf_sdh_ble - SoftDevice BLE event handler
+//==========================================================
+#ifndef NRF_SDH_BLE_ENABLED
+#define NRF_SDH_BLE_ENABLED 1
+#endif
+// <h> BLE Stack configuration - Stack configuration parameters
+
+// <i> The SoftDevice handler will configure the stack with these parameters when calling @ref nrf_sdh_ble_default_cfg_set.
+// <i> Other libraries might depend on these values; keep them up-to-date even if you are not explicitely calling @ref nrf_sdh_ble_default_cfg_set.
+//==========================================================
+// <o> NRF_SDH_BLE_GAP_DATA_LENGTH   <27-251> 
+
+
+// <i> Requested BLE GAP data length to be negotiated.
+
+#ifndef NRF_SDH_BLE_GAP_DATA_LENGTH
+#define NRF_SDH_BLE_GAP_DATA_LENGTH 27
+#endif
+
+// <o> NRF_SDH_BLE_PERIPHERAL_LINK_COUNT - Maximum number of peripheral links. 
+#ifndef NRF_SDH_BLE_PERIPHERAL_LINK_COUNT
+#define NRF_SDH_BLE_PERIPHERAL_LINK_COUNT 0
+#endif
+
+// <o> NRF_SDH_BLE_CENTRAL_LINK_COUNT - Maximum number of central links. 
+#ifndef NRF_SDH_BLE_CENTRAL_LINK_COUNT
+#define NRF_SDH_BLE_CENTRAL_LINK_COUNT 0
+#endif
+
+// <o> NRF_SDH_BLE_TOTAL_LINK_COUNT - Total link count. 
+// <i> Maximum number of total concurrent connections using the default configuration.
+
+#ifndef NRF_SDH_BLE_TOTAL_LINK_COUNT
+#define NRF_SDH_BLE_TOTAL_LINK_COUNT 1
+#endif
+
+// <o> NRF_SDH_BLE_GAP_EVENT_LENGTH - GAP event length. 
+// <i> The time set aside for this connection on every connection interval in 1.25 ms units.
+
+#ifndef NRF_SDH_BLE_GAP_EVENT_LENGTH
+#define NRF_SDH_BLE_GAP_EVENT_LENGTH 6
+#endif
+
+// <o> NRF_SDH_BLE_GATT_MAX_MTU_SIZE - Static maximum MTU size. 
+#ifndef NRF_SDH_BLE_GATT_MAX_MTU_SIZE
+#define NRF_SDH_BLE_GATT_MAX_MTU_SIZE 23
+#endif
+
+// <o> NRF_SDH_BLE_GATTS_ATTR_TAB_SIZE - Attribute Table size in bytes. The size must be a multiple of 4. 
+#ifndef NRF_SDH_BLE_GATTS_ATTR_TAB_SIZE
+#define NRF_SDH_BLE_GATTS_ATTR_TAB_SIZE 248
+#endif
+
+// <o> NRF_SDH_BLE_VS_UUID_COUNT - The number of vendor-specific UUIDs. 
+#ifndef NRF_SDH_BLE_VS_UUID_COUNT
+#define NRF_SDH_BLE_VS_UUID_COUNT 0
+#endif
+
+// <q> NRF_SDH_BLE_SERVICE_CHANGED  - Include the Service Changed characteristic in the Attribute Table.
+ 
+
+#ifndef NRF_SDH_BLE_SERVICE_CHANGED
+#define NRF_SDH_BLE_SERVICE_CHANGED 0
+#endif
+
+// </h> 
+//==========================================================
+
+// <h> BLE Observers - Observers and priority levels
+
+//==========================================================
+// <o> NRF_SDH_BLE_OBSERVER_PRIO_LEVELS - Total number of priority levels for BLE observers. 
+// <i> This setting configures the number of priority levels available for BLE event handlers.
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_BLE_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_BLE_OBSERVER_PRIO_LEVELS 4
+#endif
+
+// <h> BLE Observers priorities - Invididual priorities
+
+//==========================================================
+// <o> BLE_ADV_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Advertising module.
+
+#ifndef BLE_ADV_BLE_OBSERVER_PRIO
+#define BLE_ADV_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> BLE_ANCS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Apple Notification Service Client.
+
+#ifndef BLE_ANCS_C_BLE_OBSERVER_PRIO
+#define BLE_ANCS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_ANS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Alert Notification Service Client.
+
+#ifndef BLE_ANS_C_BLE_OBSERVER_PRIO
+#define BLE_ANS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_BAS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Battery Service.
+
+#ifndef BLE_BAS_BLE_OBSERVER_PRIO
+#define BLE_BAS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_BAS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Battery Service Client.
+
+#ifndef BLE_BAS_C_BLE_OBSERVER_PRIO
+#define BLE_BAS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_BPS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Blood Pressure Service.
+
+#ifndef BLE_BPS_BLE_OBSERVER_PRIO
+#define BLE_BPS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_CONN_PARAMS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Connection parameters module.
+
+#ifndef BLE_CONN_PARAMS_BLE_OBSERVER_PRIO
+#define BLE_CONN_PARAMS_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> BLE_CONN_STATE_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Connection State module.
+
+#ifndef BLE_CONN_STATE_BLE_OBSERVER_PRIO
+#define BLE_CONN_STATE_BLE_OBSERVER_PRIO 0
+#endif
+
+// <o> BLE_CSCS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Cycling Speed and Cadence Service.
+
+#ifndef BLE_CSCS_BLE_OBSERVER_PRIO
+#define BLE_CSCS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_CTS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Current Time Service Client.
+
+#ifndef BLE_CTS_C_BLE_OBSERVER_PRIO
+#define BLE_CTS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_DB_DISC_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Database Discovery module.
+
+#ifndef BLE_DB_DISC_BLE_OBSERVER_PRIO
+#define BLE_DB_DISC_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> BLE_DFU_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the DFU Service.
+
+#ifndef BLE_DFU_BLE_OBSERVER_PRIO
+#define BLE_DFU_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_DIS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Device Information Client.
+
+#ifndef BLE_DIS_C_BLE_OBSERVER_PRIO
+#define BLE_DIS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_GLS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Glucose Service.
+
+#ifndef BLE_GLS_BLE_OBSERVER_PRIO
+#define BLE_GLS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_HIDS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Human Interface Device Service.
+
+#ifndef BLE_HIDS_BLE_OBSERVER_PRIO
+#define BLE_HIDS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_HRS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Heart Rate Service.
+
+#ifndef BLE_HRS_BLE_OBSERVER_PRIO
+#define BLE_HRS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_HRS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Heart Rate Service Client.
+
+#ifndef BLE_HRS_C_BLE_OBSERVER_PRIO
+#define BLE_HRS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_HTS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Health Thermometer Service.
+
+#ifndef BLE_HTS_BLE_OBSERVER_PRIO
+#define BLE_HTS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_IAS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Immediate Alert Service.
+
+#ifndef BLE_IAS_BLE_OBSERVER_PRIO
+#define BLE_IAS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_IAS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Immediate Alert Service Client.
+
+#ifndef BLE_IAS_C_BLE_OBSERVER_PRIO
+#define BLE_IAS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_LBS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the LED Button Service.
+
+#ifndef BLE_LBS_BLE_OBSERVER_PRIO
+#define BLE_LBS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_LBS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the LED Button Service Client.
+
+#ifndef BLE_LBS_C_BLE_OBSERVER_PRIO
+#define BLE_LBS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_LLS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Link Loss Service.
+
+#ifndef BLE_LLS_BLE_OBSERVER_PRIO
+#define BLE_LLS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_LNS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Location Navigation Service.
+
+#ifndef BLE_LNS_BLE_OBSERVER_PRIO
+#define BLE_LNS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_NUS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the UART Service.
+
+#ifndef BLE_NUS_BLE_OBSERVER_PRIO
+#define BLE_NUS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_NUS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the UART Central Service.
+
+#ifndef BLE_NUS_C_BLE_OBSERVER_PRIO
+#define BLE_NUS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_OTS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Object transfer service.
+
+#ifndef BLE_OTS_BLE_OBSERVER_PRIO
+#define BLE_OTS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_OTS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Object transfer service client.
+
+#ifndef BLE_OTS_C_BLE_OBSERVER_PRIO
+#define BLE_OTS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_RSCS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Running Speed and Cadence Service.
+
+#ifndef BLE_RSCS_BLE_OBSERVER_PRIO
+#define BLE_RSCS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_RSCS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Running Speed and Cadence Client.
+
+#ifndef BLE_RSCS_C_BLE_OBSERVER_PRIO
+#define BLE_RSCS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BLE_TPS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the TX Power Service.
+
+#ifndef BLE_TPS_BLE_OBSERVER_PRIO
+#define BLE_TPS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> BSP_BTN_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Button Control module.
+
+#ifndef BSP_BTN_BLE_OBSERVER_PRIO
+#define BSP_BTN_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the NFC pairing library.
+
+#ifndef NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO
+#define NFC_BLE_PAIR_LIB_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NRF_BLE_BMS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Bond Management Service.
+
+#ifndef NRF_BLE_BMS_BLE_OBSERVER_PRIO
+#define NRF_BLE_BMS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> NRF_BLE_CGMS_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Contiuon Glucose Monitoring Service.
+
+#ifndef NRF_BLE_CGMS_BLE_OBSERVER_PRIO
+#define NRF_BLE_CGMS_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> NRF_BLE_ES_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Eddystone module.
+
+#ifndef NRF_BLE_ES_BLE_OBSERVER_PRIO
+#define NRF_BLE_ES_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> NRF_BLE_GATTS_C_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the GATT Service Client.
+
+#ifndef NRF_BLE_GATTS_C_BLE_OBSERVER_PRIO
+#define NRF_BLE_GATTS_C_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> NRF_BLE_GATT_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the GATT module.
+
+#ifndef NRF_BLE_GATT_BLE_OBSERVER_PRIO
+#define NRF_BLE_GATT_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NRF_BLE_GQ_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the GATT Queue module.
+
+#ifndef NRF_BLE_GQ_BLE_OBSERVER_PRIO
+#define NRF_BLE_GQ_BLE_OBSERVER_PRIO 1
+#endif
+
+// <o> NRF_BLE_QWR_BLE_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the Queued writes module.
+
+#ifndef NRF_BLE_QWR_BLE_OBSERVER_PRIO
+#define NRF_BLE_QWR_BLE_OBSERVER_PRIO 2
+#endif
+
+// <o> NRF_BLE_SCAN_OBSERVER_PRIO  
+// <i> Priority for dispatching the BLE events to the Scanning Module.
+
+#ifndef NRF_BLE_SCAN_OBSERVER_PRIO
+#define NRF_BLE_SCAN_OBSERVER_PRIO 1
+#endif
+
+// <o> PM_BLE_OBSERVER_PRIO - Priority with which BLE events are dispatched to the Peer Manager module. 
+#ifndef PM_BLE_OBSERVER_PRIO
+#define PM_BLE_OBSERVER_PRIO 1
+#endif
+
+// </h> 
+//==========================================================
+
+// </h> 
+//==========================================================
+
+
+// </e>
+
+// <e> NRF_SDH_ENABLED - nrf_sdh - SoftDevice handler
+//==========================================================
+#ifndef NRF_SDH_ENABLED
+#define NRF_SDH_ENABLED 1
+#endif
+// <h> Dispatch model 
+
+// <i> This setting configures how Stack events are dispatched to the application.
+//==========================================================
+// <o> NRF_SDH_DISPATCH_MODEL
+ 
+
+// <i> NRF_SDH_DISPATCH_MODEL_INTERRUPT: SoftDevice events are passed to the application from the interrupt context.
+// <i> NRF_SDH_DISPATCH_MODEL_APPSH: SoftDevice events are scheduled using @ref app_scheduler.
+// <i> NRF_SDH_DISPATCH_MODEL_POLLING: SoftDevice events are to be fetched manually.
+// <0=> NRF_SDH_DISPATCH_MODEL_INTERRUPT 
+// <1=> NRF_SDH_DISPATCH_MODEL_APPSH 
+// <2=> NRF_SDH_DISPATCH_MODEL_POLLING 
+
+#ifndef NRF_SDH_DISPATCH_MODEL
+#define NRF_SDH_DISPATCH_MODEL 0
+#endif
+
+// </h> 
+//==========================================================
+
+// <h> Clock - SoftDevice clock configuration
+
+//==========================================================
+// <o> NRF_SDH_CLOCK_LF_SRC  - SoftDevice clock source.
+ 
+// <0=> NRF_CLOCK_LF_SRC_RC 
+// <1=> NRF_CLOCK_LF_SRC_XTAL 
+// <2=> NRF_CLOCK_LF_SRC_SYNTH 
+
+#ifndef NRF_SDH_CLOCK_LF_SRC
+#define NRF_SDH_CLOCK_LF_SRC 1
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_RC_CTIV - SoftDevice calibration timer interval. 
+#ifndef NRF_SDH_CLOCK_LF_RC_CTIV
+#define NRF_SDH_CLOCK_LF_RC_CTIV 0
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_RC_TEMP_CTIV - SoftDevice calibration timer interval under constant temperature. 
+// <i> How often (in number of calibration intervals) the RC oscillator shall be calibrated
+// <i>  if the temperature has not changed.
+
+#ifndef NRF_SDH_CLOCK_LF_RC_TEMP_CTIV
+#define NRF_SDH_CLOCK_LF_RC_TEMP_CTIV 0
+#endif
+
+// <o> NRF_SDH_CLOCK_LF_ACCURACY  - External clock accuracy used in the LL to compute timing.
+ 
+// <0=> NRF_CLOCK_LF_ACCURACY_250_PPM 
+// <1=> NRF_CLOCK_LF_ACCURACY_500_PPM 
+// <2=> NRF_CLOCK_LF_ACCURACY_150_PPM 
+// <3=> NRF_CLOCK_LF_ACCURACY_100_PPM 
+// <4=> NRF_CLOCK_LF_ACCURACY_75_PPM 
+// <5=> NRF_CLOCK_LF_ACCURACY_50_PPM 
+// <6=> NRF_CLOCK_LF_ACCURACY_30_PPM 
+// <7=> NRF_CLOCK_LF_ACCURACY_20_PPM 
+// <8=> NRF_CLOCK_LF_ACCURACY_10_PPM 
+// <9=> NRF_CLOCK_LF_ACCURACY_5_PPM 
+// <10=> NRF_CLOCK_LF_ACCURACY_2_PPM 
+// <11=> NRF_CLOCK_LF_ACCURACY_1_PPM 
+
+#ifndef NRF_SDH_CLOCK_LF_ACCURACY
+#define NRF_SDH_CLOCK_LF_ACCURACY 7
+#endif
+
+// </h> 
+//==========================================================
+
+// <h> SDH Observers - Observers and priority levels
+
+//==========================================================
+// <o> NRF_SDH_REQ_OBSERVER_PRIO_LEVELS - Total number of priority levels for request observers. 
+// <i> This setting configures the number of priority levels available for the SoftDevice request event handlers.
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_REQ_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_REQ_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <o> NRF_SDH_STATE_OBSERVER_PRIO_LEVELS - Total number of priority levels for state observers. 
+// <i> This setting configures the number of priority levels available for the SoftDevice state event handlers.
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_STATE_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_STATE_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <o> NRF_SDH_STACK_OBSERVER_PRIO_LEVELS - Total number of priority levels for stack event observers. 
+// <i> This setting configures the number of priority levels available for the SoftDevice stack event handlers (ANT, BLE, SoC).
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_STACK_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_STACK_OBSERVER_PRIO_LEVELS 2
+#endif
+
+
+// <h> State Observers priorities - Invididual priorities
+
+//==========================================================
+// <o> CLOCK_CONFIG_STATE_OBSERVER_PRIO  
+// <i> Priority with which state events are dispatched to the Clock driver.
+
+#ifndef CLOCK_CONFIG_STATE_OBSERVER_PRIO
+#define CLOCK_CONFIG_STATE_OBSERVER_PRIO 0
+#endif
+
+// <o> POWER_CONFIG_STATE_OBSERVER_PRIO  
+// <i> Priority with which state events are dispatched to the Power driver.
+
+#ifndef POWER_CONFIG_STATE_OBSERVER_PRIO
+#define POWER_CONFIG_STATE_OBSERVER_PRIO 0
+#endif
+
+// <o> RNG_CONFIG_STATE_OBSERVER_PRIO  
+// <i> Priority with which state events are dispatched to this module.
+
+#ifndef RNG_CONFIG_STATE_OBSERVER_PRIO
+#define RNG_CONFIG_STATE_OBSERVER_PRIO 0
+#endif
+
+// </h> 
+//==========================================================
+
+// <h> Stack Event Observers priorities - Invididual priorities
+
+//==========================================================
+// <o> NRF_SDH_ANT_STACK_OBSERVER_PRIO  
+// <i> This setting configures the priority with which ANT events are processed with respect to other events coming from the stack.
+// <i> Modify this setting if you need to have ANT events dispatched before or after other stack events, such as BLE or SoC.
+// <i> Zero is the highest priority.
+
+#ifndef NRF_SDH_ANT_STACK_OBSERVER_PRIO
+#define NRF_SDH_ANT_STACK_OBSERVER_PRIO 0
+#endif
+
+// <o> NRF_SDH_BLE_STACK_OBSERVER_PRIO  
+// <i> This setting configures the priority with which BLE events are processed with respect to other events coming from the stack.
+// <i> Modify this setting if you need to have BLE events dispatched before or after other stack events, such as ANT or SoC.
+// <i> Zero is the highest priority.
+
+#ifndef NRF_SDH_BLE_STACK_OBSERVER_PRIO
+#define NRF_SDH_BLE_STACK_OBSERVER_PRIO 0
+#endif
+
+// <o> NRF_SDH_SOC_STACK_OBSERVER_PRIO  
+// <i> This setting configures the priority with which SoC events are processed with respect to other events coming from the stack.
+// <i> Modify this setting if you need to have SoC events dispatched before or after other stack events, such as ANT or BLE.
+// <i> Zero is the highest priority.
+
+#ifndef NRF_SDH_SOC_STACK_OBSERVER_PRIO
+#define NRF_SDH_SOC_STACK_OBSERVER_PRIO 0
+#endif
+
+// </h> 
+//==========================================================
+
+// </h> 
+//==========================================================
+
+
+// </e>
+
+// <e> NRF_SDH_SOC_ENABLED - nrf_sdh_soc - SoftDevice SoC event handler
+//==========================================================
+#ifndef NRF_SDH_SOC_ENABLED
+#define NRF_SDH_SOC_ENABLED 1
+#endif
+// <h> SoC Observers - Observers and priority levels
+
+//==========================================================
+// <o> NRF_SDH_SOC_OBSERVER_PRIO_LEVELS - Total number of priority levels for SoC observers. 
+// <i> This setting configures the number of priority levels available for the SoC event handlers.
+// <i> The priority level of a handler determines the order in which it receives events, with respect to other handlers.
+
+#ifndef NRF_SDH_SOC_OBSERVER_PRIO_LEVELS
+#define NRF_SDH_SOC_OBSERVER_PRIO_LEVELS 2
+#endif
+
+// <h> SoC Observers priorities - Invididual priorities
+
+//==========================================================
+// <o> BLE_DFU_SOC_OBSERVER_PRIO  
+// <i> Priority with which BLE events are dispatched to the DFU Service.
+
+#ifndef BLE_DFU_SOC_OBSERVER_PRIO
+#define BLE_DFU_SOC_OBSERVER_PRIO 1
+#endif
+
+// <o> CLOCK_CONFIG_SOC_OBSERVER_PRIO  
+// <i> Priority with which SoC events are dispatched to the Clock driver.
+
+#ifndef CLOCK_CONFIG_SOC_OBSERVER_PRIO
+#define CLOCK_CONFIG_SOC_OBSERVER_PRIO 0
+#endif
+
+// <o> POWER_CONFIG_SOC_OBSERVER_PRIO  
+// <i> Priority with which SoC events are dispatched to the Power driver.
+
+#ifndef POWER_CONFIG_SOC_OBSERVER_PRIO
+#define POWER_CONFIG_SOC_OBSERVER_PRIO 0
+#endif
+
+// </h> 
+//==========================================================
+
+// </h> 
+//==========================================================
+
 
 // <<< end of configuration section >>>
 #endif //SDK_CONFIG_H

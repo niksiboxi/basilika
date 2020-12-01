@@ -8,7 +8,7 @@
 #include "nrf_drv_rtc.h"
 #include "saadc.h"
 
-const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(0); /**< Declaring an instance of nrf_drv_rtc for RTC0. */
+const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(2); /**< Declaring an instance of nrf_drv_rtc for RTC0. */
 
 /* Function to handling the RTC0 interrupts.
  * Triggered on TICK and COMPARE0 match
