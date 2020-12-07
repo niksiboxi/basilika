@@ -1787,6 +1787,13 @@
 
 // </e>
 
+// <q> NRF_GFX_ENABLED  - nrf_gfx - GFX module
+ 
+
+#ifndef NRF_GFX_ENABLED
+#define NRF_GFX_ENABLED 1
+#endif
+
 // </e>
 
 // <q> NRF_MEMOBJ_ENABLED  - nrf_memobj - Linked memory allocator module
