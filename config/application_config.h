@@ -9,5 +9,6 @@
 
 // GPIO Configuration
 #define TBASE_SET_PIN 30 // Set gpio port P0.30 to control NPN Transistor Base
+#define TFT_LITE      9  // TFT Display backlight control pin
 
 #endif
