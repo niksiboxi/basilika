@@ -6,6 +6,7 @@
 
 #include "saadc.h"
 #include "application_config.h"
+#include "lcd_st7735.h"
 #include "nrf_drv_saadc.h"
 #include "nrf_error.h"
 #include "nrf_gpio.h"
@@ -70,11 +71,14 @@ ret_code_t saadc_sample(void) {
   return error_code;
 }
 
-void saadc_init_sample_uninit(void) {
+void saadc_init_sample_uninit(int16_t adc) {
   nrf_gpio_pin_set(TBASE_SET_PIN);
   saadc_init();
   saadc_sample();
-  NRF_LOG_INFO("ADC: %d", adc_reading.adc);
+  adc = adc_reading.adc;
+  screen_clear();
+  moisture_print(adc);
+  NRF_LOG_INFO("ADC: %d SAADC: %d", adc, adc_reading.adc);
   while (m_sampling == true)
     ;
   saadc_uninit();

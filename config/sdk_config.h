@@ -787,22 +787,20 @@
 #ifndef NRFX_SPI_ENABLED
 #define NRFX_SPI_ENABLED 1
 #endif
+
 // <q> NRFX_SPI0_ENABLED  - Enable SPI0 instance
- 
 
 #ifndef NRFX_SPI0_ENABLED
-#define NRFX_SPI0_ENABLED 1
+#define NRFX_SPI0_ENABLED 0
 #endif
 
 // <q> NRFX_SPI1_ENABLED  - Enable SPI1 instance
- 
 
 #ifndef NRFX_SPI1_ENABLED
 #define NRFX_SPI1_ENABLED 0
 #endif
 
 // <q> NRFX_SPI2_ENABLED  - Enable SPI2 instance
- 
 
 #ifndef NRFX_SPI2_ENABLED
 #define NRFX_SPI2_ENABLED 0
@@ -919,11 +917,10 @@
 // <e> SPI0_ENABLED - Enable SPI0 instance
 //==========================================================
 #ifndef SPI0_ENABLED
-#define SPI0_ENABLED 1
+#define SPI0_ENABLED 0
 #endif
-// <q> SPI0_USE_EASY_DMA  - Use EasyDMA
- 
 
+// <q> SPI0_USE_EASY_DMA  - Use EasyDMA
 #ifndef SPI0_USE_EASY_DMA
 #define SPI0_USE_EASY_DMA 1
 #endif
@@ -933,7 +930,7 @@
 // <e> SPI1_ENABLED - Enable SPI1 instance
 //==========================================================
 #ifndef SPI1_ENABLED
-#define SPI1_ENABLED 0
+#define SPI1_ENABLED 1
 #endif
 // <q> SPI1_USE_EASY_DMA  - Use EasyDMA
  
@@ -1795,6 +1792,155 @@
 #endif
 
 // </e>
+
+// <o> ST7735_SCK_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_SCK_PIN
+#define ST7735_SCK_PIN 25
+#endif
+
+// <o> ST7735_MISO_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_MISO_PIN
+#define ST7735_MISO_PIN 24
+#endif
+
+// <o> ST7735_MOSI_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_MOSI_PIN
+#define ST7735_MOSI_PIN 23
+#endif
+
+// <o> ST7735_SS_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_SS_PIN
+#define ST7735_SS_PIN 22
+#endif
+
+// <o> ST7735_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef ST7735_IRQ_PRIORITY
+#define ST7735_IRQ_PRIORITY 3
+#endif
+
+// <e> ST7735_ENABLED - st7735 - ST7735R TFT controller
+//==========================================================
+#ifndef ST7735_ENABLED
+#define ST7735_ENABLED 1
+#endif
+
+// </h> 
+
+// <o> ST7735_SCK_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_SCK_PIN
+#define ST7735_SCK_PIN 25
+#endif
+
+// <o> ST7735_MISO_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_MISO_PIN
+#define ST7735_MISO_PIN 24
+#endif
+
+// <o> ST7735_MOSI_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_MOSI_PIN
+#define ST7735_MOSI_PIN 23
+#endif
+
+// <o> ST7735_SS_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_SS_PIN
+#define ST7735_SS_PIN 22
+#endif
+
+// <o> ST7735_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef ST7735_IRQ_PRIORITY
+#define ST7735_IRQ_PRIORITY 6
+#endif
+
+// </h> 
+//==========================================================
+
+//==========================================================
+
+// <o> ST7735_SPI_INSTANCE
+ 
+// <0=> 0 
+// <1=> 1 
+// <2=> 2 
+
+#ifndef ST7735_SPI_INSTANCE
+#define ST7735_SPI_INSTANCE 1
+#endif
+
+// <o> ST7735_TAB_COLOR  - Color of the tab attached to the screen.
+ 
+// <0=> INITR_GREENTAB 
+// <1=> INITR_REDTAB 
+// <2=> INITR_BLACKTAB 
+// <3=> INITR_144GREENTAB 
+
+#ifndef ST7735_TAB_COLOR
+#define ST7735_TAB_COLOR 0
+#endif
+
+// <o> ST7735_DC_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_DC_PIN
+#define ST7735_DC_PIN 19
+#endif
+
+// <o> ST7735_HEIGHT - ST7735 height  <0-162> 
+
+
+#ifndef ST7735_HEIGHT
+#define ST7735_HEIGHT 160
+#endif
+
+// <o> ST7735_WIDTH - ST7735 width  <0-132> 
+
+
+#ifndef ST7735_WIDTH
+#define ST7735_WIDTH 128
+#endif
+
+// </e>
+
+//==========================================================
 
 // <q> NRF_MEMOBJ_ENABLED  - nrf_memobj - Linked memory allocator module
 

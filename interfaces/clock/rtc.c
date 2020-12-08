@@ -10,12 +10,14 @@
 
 const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(0); /**< Declaring an instance of nrf_drv_rtc for RTC0. */
 
+saadc_config_t saadc;
+
 /* Function to handling the RTC0 interrupts.
  * Triggered on TICK and COMPARE0 match
  */
 static void rtc_handler(nrf_drv_rtc_int_type_t int_type) {
   if (int_type == NRF_DRV_RTC_INT_COMPARE0) {
-    saadc_init_sample_uninit();
+    saadc_init_sample_uninit(saadc.adc);
     nrf_drv_rtc_counter_clear(&rtc);
   }
 }
