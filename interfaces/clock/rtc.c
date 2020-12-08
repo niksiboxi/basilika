@@ -17,7 +17,7 @@ saadc_config_t saadc;
  */
 static void rtc_handler(nrf_drv_rtc_int_type_t int_type) {
   if (int_type == NRF_DRV_RTC_INT_COMPARE0) {
-    saadc_init_sample_uninit(saadc.adc);
+    saadc_init_sample_uninit();
     nrf_drv_rtc_counter_clear(&rtc);
   }
 }

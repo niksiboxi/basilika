@@ -71,14 +71,13 @@ ret_code_t saadc_sample(void) {
   return error_code;
 }
 
-void saadc_init_sample_uninit(int16_t adc) {
+void saadc_init_sample_uninit(void) {
   nrf_gpio_pin_set(TBASE_SET_PIN);
   saadc_init();
   saadc_sample();
-  adc = adc_reading.adc;
   screen_clear();
-  moisture_print(adc);
-  NRF_LOG_INFO("ADC: %d SAADC: %d", adc, adc_reading.adc);
+  moisture_print(adc_reading.adc);
+  NRF_LOG_INFO("ADC: %d", adc_reading.adc);
   while (m_sampling == true)
     ;
   saadc_uninit();
