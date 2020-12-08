@@ -664,6 +664,315 @@
 
 // </e>
 
+// <e> NRFX_SPIM_ENABLED - nrfx_spim - SPIM peripheral driver
+//==========================================================
+#ifndef NRFX_SPIM_ENABLED
+#define NRFX_SPIM_ENABLED 1
+#endif
+// <q> NRFX_SPIM0_ENABLED  - Enable SPIM0 instance
+ 
+
+#ifndef NRFX_SPIM0_ENABLED
+#define NRFX_SPIM0_ENABLED 0
+#endif
+
+// <q> NRFX_SPIM1_ENABLED  - Enable SPIM1 instance
+ 
+
+#ifndef NRFX_SPIM1_ENABLED
+#define NRFX_SPIM1_ENABLED 0
+#endif
+
+// <q> NRFX_SPIM2_ENABLED  - Enable SPIM2 instance
+ 
+
+#ifndef NRFX_SPIM2_ENABLED
+#define NRFX_SPIM2_ENABLED 0
+#endif
+
+// <o> NRFX_SPIM_MISO_PULL_CFG  - MISO pin pull configuration.
+ 
+// <0=> NRF_GPIO_PIN_NOPULL 
+// <1=> NRF_GPIO_PIN_PULLDOWN 
+// <3=> NRF_GPIO_PIN_PULLUP 
+
+#ifndef NRFX_SPIM_MISO_PULL_CFG
+#define NRFX_SPIM_MISO_PULL_CFG 1
+#endif
+
+// <o> NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#endif
+
+// <e> NRFX_SPIM_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef NRFX_SPIM_CONFIG_LOG_ENABLED
+#define NRFX_SPIM_CONFIG_LOG_ENABLED 0
+#endif
+// <o> NRFX_SPIM_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef NRFX_SPIM_CONFIG_LOG_LEVEL
+#define NRFX_SPIM_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> NRFX_SPIM_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NRFX_SPIM_CONFIG_INFO_COLOR
+#define NRFX_SPIM_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> NRFX_SPIM_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NRFX_SPIM_CONFIG_DEBUG_COLOR
+#define NRFX_SPIM_CONFIG_DEBUG_COLOR 0
+#endif
+
+// </e>
+
+// <q> NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED  - Enables nRF52 anomaly 109 workaround for SPIM.
+ 
+
+// <i> The workaround uses interrupts to wake up the CPU by catching
+// <i> a start event of zero-length transmission to start the clock. This 
+// <i> ensures that the DMA transfer will be executed without issues and
+// <i> that the proper transfer will be started. See more in the Errata 
+// <i> document or Anomaly 109 Addendum located at 
+// <i> https://infocenter.nordicsemi.com/
+
+#ifndef NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
+#define NRFX_SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
+#endif
+
+// </e>
+
+// <e> NRFX_SPI_ENABLED - nrfx_spi - SPI peripheral driver
+//==========================================================
+#ifndef NRFX_SPI_ENABLED
+#define NRFX_SPI_ENABLED 1
+#endif
+
+// <q> NRFX_SPI0_ENABLED  - Enable SPI0 instance
+
+#ifndef NRFX_SPI0_ENABLED
+#define NRFX_SPI0_ENABLED 0
+#endif
+
+// <q> NRFX_SPI1_ENABLED  - Enable SPI1 instance
+
+#ifndef NRFX_SPI1_ENABLED
+#define NRFX_SPI1_ENABLED 0
+#endif
+
+// <q> NRFX_SPI2_ENABLED  - Enable SPI2 instance
+
+#ifndef NRFX_SPI2_ENABLED
+#define NRFX_SPI2_ENABLED 0
+#endif
+
+// <o> NRFX_SPI_MISO_PULL_CFG  - MISO pin pull configuration.
+ 
+// <0=> NRF_GPIO_PIN_NOPULL 
+// <1=> NRF_GPIO_PIN_PULLDOWN 
+// <3=> NRF_GPIO_PIN_PULLUP 
+
+#ifndef NRFX_SPI_MISO_PULL_CFG
+#define NRFX_SPI_MISO_PULL_CFG 1
+#endif
+
+// <o> NRFX_SPI_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef NRFX_SPI_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_SPI_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#endif
+
+// <e> NRFX_SPI_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef NRFX_SPI_CONFIG_LOG_ENABLED
+#define NRFX_SPI_CONFIG_LOG_ENABLED 0
+#endif
+// <o> NRFX_SPI_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef NRFX_SPI_CONFIG_LOG_LEVEL
+#define NRFX_SPI_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> NRFX_SPI_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NRFX_SPI_CONFIG_INFO_COLOR
+#define NRFX_SPI_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> NRFX_SPI_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NRFX_SPI_CONFIG_DEBUG_COLOR
+#define NRFX_SPI_CONFIG_DEBUG_COLOR 0
+#endif
+
+// </e>
+
+// <e> SPI_ENABLED - nrf_drv_spi - SPI/SPIM peripheral driver - legacy layer
+//==========================================================
+#ifndef SPI_ENABLED
+#define SPI_ENABLED 1
+#endif
+// <o> SPI_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef SPI_DEFAULT_CONFIG_IRQ_PRIORITY
+#define SPI_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#endif
+
+// <o> NRF_SPI_DRV_MISO_PULLUP_CFG  - MISO PIN pull-up configuration.
+ 
+// <0=> NRF_GPIO_PIN_NOPULL 
+// <1=> NRF_GPIO_PIN_PULLDOWN 
+// <3=> NRF_GPIO_PIN_PULLUP 
+
+#ifndef NRF_SPI_DRV_MISO_PULLUP_CFG
+#define NRF_SPI_DRV_MISO_PULLUP_CFG 1
+#endif
+
+// <e> SPI0_ENABLED - Enable SPI0 instance
+//==========================================================
+#ifndef SPI0_ENABLED
+#define SPI0_ENABLED 0
+#endif
+
+// <q> SPI0_USE_EASY_DMA  - Use EasyDMA
+#ifndef SPI0_USE_EASY_DMA
+#define SPI0_USE_EASY_DMA 1
+#endif
+
+// </e>
+
+// <e> SPI1_ENABLED - Enable SPI1 instance
+//==========================================================
+#ifndef SPI1_ENABLED
+#define SPI1_ENABLED 1
+#endif
+// <q> SPI1_USE_EASY_DMA  - Use EasyDMA
+ 
+
+#ifndef SPI1_USE_EASY_DMA
+#define SPI1_USE_EASY_DMA 1
+#endif
+
+// </e>
+
+// <e> SPI2_ENABLED - Enable SPI2 instance
+//==========================================================
+#ifndef SPI2_ENABLED
+#define SPI2_ENABLED 0
+#endif
+// <q> SPI2_USE_EASY_DMA  - Use EasyDMA
+ 
+
+#ifndef SPI2_USE_EASY_DMA
+#define SPI2_USE_EASY_DMA 1
+#endif
+
+// </e>
+
+// <q> SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED  - Enables nRF52 anomaly 109 workaround for SPIM.
+ 
+
+// <i> The workaround uses interrupts to wake up the CPU by catching
+// <i> a start event of zero-length transmission to start the clock. This 
+// <i> ensures that the DMA transfer will be executed without issues and
+// <i> that the proper transfer will be started. See more in the Errata 
+// <i> document or Anomaly 109 Addendum located at 
+// <i> https://infocenter.nordicsemi.com/
+
+#ifndef SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
+#define SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
+#endif
+
+// </e>
+
+// </e>
+
 // </e>
 
 // <e> NRFX_RTC_ENABLED - nrfx_rtc - RTC peripheral driver
@@ -1475,7 +1784,163 @@
 
 // </e>
 
+// <q> NRF_GFX_ENABLED  - nrf_gfx - GFX module
+ 
+
+#ifndef NRF_GFX_ENABLED
+#define NRF_GFX_ENABLED 1
+#endif
+
 // </e>
+
+// <o> ST7735_SCK_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_SCK_PIN
+#define ST7735_SCK_PIN 25
+#endif
+
+// <o> ST7735_MISO_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_MISO_PIN
+#define ST7735_MISO_PIN 24
+#endif
+
+// <o> ST7735_MOSI_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_MOSI_PIN
+#define ST7735_MOSI_PIN 23
+#endif
+
+// <o> ST7735_SS_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_SS_PIN
+#define ST7735_SS_PIN 22
+#endif
+
+// <o> ST7735_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef ST7735_IRQ_PRIORITY
+#define ST7735_IRQ_PRIORITY 3
+#endif
+
+// <e> ST7735_ENABLED - st7735 - ST7735R TFT controller
+//==========================================================
+#ifndef ST7735_ENABLED
+#define ST7735_ENABLED 1
+#endif
+
+// </h> 
+
+// <o> ST7735_SCK_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_SCK_PIN
+#define ST7735_SCK_PIN 25
+#endif
+
+// <o> ST7735_MISO_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_MISO_PIN
+#define ST7735_MISO_PIN 24
+#endif
+
+// <o> ST7735_MOSI_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_MOSI_PIN
+#define ST7735_MOSI_PIN 23
+#endif
+
+// <o> ST7735_SS_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_SS_PIN
+#define ST7735_SS_PIN 22
+#endif
+
+// <o> ST7735_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef ST7735_IRQ_PRIORITY
+#define ST7735_IRQ_PRIORITY 6
+#endif
+
+// </h> 
+//==========================================================
+
+//==========================================================
+
+// <o> ST7735_SPI_INSTANCE
+ 
+// <0=> 0 
+// <1=> 1 
+// <2=> 2 
+
+#ifndef ST7735_SPI_INSTANCE
+#define ST7735_SPI_INSTANCE 1
+#endif
+
+// <o> ST7735_TAB_COLOR  - Color of the tab attached to the screen.
+ 
+// <0=> INITR_GREENTAB 
+// <1=> INITR_REDTAB 
+// <2=> INITR_BLACKTAB 
+// <3=> INITR_144GREENTAB 
+
+#ifndef ST7735_TAB_COLOR
+#define ST7735_TAB_COLOR 0
+#endif
+
+// <o> ST7735_DC_PIN - Pin number  <0-47> 
+
+
+#ifndef ST7735_DC_PIN
+#define ST7735_DC_PIN 19
+#endif
+
+// <o> ST7735_HEIGHT - ST7735 height  <0-162> 
+
+
+#ifndef ST7735_HEIGHT
+#define ST7735_HEIGHT 160
+#endif
+
+// <o> ST7735_WIDTH - ST7735 width  <0-132> 
+
+
+#ifndef ST7735_WIDTH
+#define ST7735_WIDTH 128
+#endif
+
+// </e>
+
+//==========================================================
 
 // <q> NRF_MEMOBJ_ENABLED  - nrf_memobj - Linked memory allocator module
 
