@@ -17,6 +17,9 @@ saadc_config_t adc_reading;
 
 static bool m_saadc_initialized = false;
 static volatile bool m_sampling = false;
+static int16_t moisture_min = 0;
+static int16_t moisture_max = 0;
+static float moisture_percentage;
 
 /* SAADC Callback */
 void saadc_callback(nrf_drv_saadc_evt_t const *p_event) {
@@ -82,9 +85,24 @@ void saadc_init_sample_uninit(void) {
   saadc_init();
   saadc_sample();
   screen_clear();
-  moisture_print(adc_reading.adc);
+
+  if(adc_reading.adc > moisture_min){
+    if(adc_reading.adc >= moisture_max){
+          moisture_max = adc_reading.adc;
+        }
+    }
+  else
+  {
+    if(adc_reading.adc < moisture_min){
+      moisture_min = adc_reading.adc;
+    }
+  }
+
+  moisture_percentage = (float)(adc_reading.adc - moisture_min) / (moisture_max - moisture_min) * 100;
+
+  moisture_print(moisture_percentage);
   voltage = adc_reading.adc * SAADC_MVOLTS_MULTIPLIER; //<- Ref. SAADC Digital Output
-  NRF_LOG_INFO("ADC: %d Voltage: %dmV", adc_reading.adc, voltage);
+  NRF_LOG_INFO("ADC: %d Moisture: "NRF_LOG_FLOAT_MARKER" Voltage: %dmV", adc_reading.adc, NRF_LOG_FLOAT(moisture_percentage), voltage);
   while (m_sampling == true)
     ;
   saadc_uninit();
