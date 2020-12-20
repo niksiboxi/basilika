@@ -71,18 +71,20 @@ ret_code_t saadc_sample(void) {
   ret_code_t error_code = NRF_SUCCESS;
   m_sampling = true;
 
-  error_code = nrf_drv_saadc_sample();
+  error_code |= nrf_drv_saadc_sample();  //<-Trigger the SAADC SAMPLE task
 
   return error_code;
 }
 
 void saadc_init_sample_uninit(void) {
+  int16_t voltage;
   nrf_gpio_pin_set(TBASE_SET_PIN);
   saadc_init();
   saadc_sample();
   screen_clear();
   moisture_print(adc_reading.adc);
-  NRF_LOG_INFO("ADC: %d", adc_reading.adc);
+  voltage = adc_reading.adc * SAADC_MVOLTS_MULTIPLIER; //<- Ref. SAADC Digital Output
+  NRF_LOG_INFO("ADC: %d Voltage: %dmV", adc_reading.adc, voltage);
   while (m_sampling == true)
     ;
   saadc_uninit();
