@@ -25,8 +25,8 @@ void background_set(void) {
   nrf_gfx_invert(p_lcd, true);
 }
 
-void moisture_print(int16_t adc) {
-  itoa(adc, buf, 10); // Convert to string
+void moisture_print(int percentage) {
+  itoa(percentage, buf, 10); // Convert to string
 
   nrf_gfx_point_t label = NRF_GFX_POINT(5, nrf_gfx_height_get(p_lcd) - 100);
   APP_ERROR_CHECK(nrf_gfx_print(p_lcd, &label, 0, test_text, p_font, true));

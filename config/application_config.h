@@ -2,7 +2,8 @@
 #define APPLICATION_CONFIG_H
 
 // SAADC Configuration
-#define SAMPLES_IN_BUFFER 1 // Size of SAADC buffer
+#define SAMPLES_IN_BUFFER 1   // Size of SAADC buffer
+#define SAADC_MVOLTS_MULTIPLIER  71  // For conversion ADC into mV
 
 // RTC Configuration
 #define COMPARE_COUNTERTIME (1UL) // Compare event timeout (sec.)
