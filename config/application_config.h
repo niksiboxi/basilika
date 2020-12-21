@@ -11,4 +11,8 @@
 // GPIO Configuration
 #define TBASE_SET_PIN 30 // Set gpio port P0.30 to control NPN Transistor Base
 
+#define TWI_INSTANCE  0
+#define TWI_SCL_PIN   27
+#define TWI_SDA_PIN   26
+
 #endif
