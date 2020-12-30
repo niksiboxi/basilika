@@ -100,11 +100,11 @@ ret_code_t tsl2561_setTiming(void)
 {
   ret_code_t err_code = NRF_SUCCESS;
 
-  uint8_t timing = 0x02;
+  uint8_t timing[2] = {0x81, 0x02};
   uint8_t read_timing;
 
-  err_code |= twi_send(TSL2561_REG_TIMING, &timing);
-  err_code |= twi_read(TSL2561_REG_TIMING, &read_timing);
+  err_code |= twi_send(TSL2561_ADDR, timing);
+  err_code |= twi_read(TSL2561_ADDR, &read_timing);
 
   NRF_LOG_INFO("Timing: %" PRIu8 "", read_timing);
 

@@ -102,7 +102,7 @@ void saadc_init_sample_uninit(void) {
 
   moisture_print(moisture_percentage);
   voltage = adc_reading.adc * SAADC_MVOLTS_MULTIPLIER; //<- Ref. SAADC Digital Output
-  NRF_LOG_INFO("ADC: %d Moisture: "NRF_LOG_FLOAT_MARKER" Voltage: %dmV", adc_reading.adc, NRF_LOG_FLOAT(moisture_percentage), voltage);
+  //NRF_LOG_INFO("ADC: %d Moisture: "NRF_LOG_FLOAT_MARKER" Voltage: %dmV", adc_reading.adc, NRF_LOG_FLOAT(moisture_percentage), voltage);
   while (m_sampling == true)
     ;
   saadc_uninit();
